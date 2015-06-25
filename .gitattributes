@@ -13,9 +13,9 @@ dist/*.html text
 src/main/html/images/*.png binary
 
 # Exporting
-lang export-ignore
-lib export-ignore
-spec export-ignore
+/lang export-ignore
+/lib export-ignore
+/spec export-ignore
 src export-ignore
 test export-ignore
 .dockerignore export-ignore
