@@ -118,6 +118,12 @@ gulp.task('copy', ['less'], function() {
     .src(['./src/main/html/**/*'])
     .pipe(gulp.dest('./dist'))
     .on('error', log);
+
+  // copy all files inside spec folder
+  gulp
+    .src(['./spec/**/*'])
+    .pipe(gulp.dest('./dist/spec'))
+    .on('error', log);
 });
 
 /**

@@ -1,0 +1,805 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "RESTful API for the Denner Portal",
+    "version" : "0.1.0",
+    "title" : "Denner Portal 2.0",
+    "contact" : {
+      "name" : "DETAIL NET",
+      "email" : "support+denner-api@detailnet.ch"
+    }
+  },
+  "host" : "denner-portal.detailnet.ch",
+  "basePath" : "/api",
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/article-groups" : {
+      "get" : {
+        "tags" : [ "Articles and Promotions – Artikel und Aktionen" ],
+        "summary" : "List all article groups",
+        "description" : "Use this operation to get a list of all article groups (Warengruppen).\n",
+        "operationId" : "listArticleGroups",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/DummyResponse"
+            }
+          }
+        }
+      }
+    },
+    "/online-filters" : {
+      "get" : {
+        "tags" : [ "Online Advertising – Online-Bewerbung" ],
+        "summary" : "List all online groups",
+        "description" : "Use this operation to get a list of all online groups (Internet-Sortimente).\n",
+        "operationId" : "listOnlineGroups",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/OnlineFiltersResponse"
+            }
+          }
+        }
+      }
+    },
+    "/online-publications" : {
+      "get" : {
+        "tags" : [ "Online Advertising – Online-Bewerbung" ],
+        "summary" : "List all online publications",
+        "description" : "Use this operation to get a list of all publications targeted at online channels, e.g. denner.ch or the Mobile App (Online-Werbemittel).\n",
+        "operationId" : "listOnlinePublications",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/DummyResponse"
+            }
+          }
+        }
+      }
+    },
+    "/online-publications/{publication_id}/articles" : {
+      "get" : {
+        "tags" : [ "Online Advertising – Online-Bewerbung" ],
+        "summary" : "List all (advertised) articles of a single online publication",
+        "description" : "Use this operation to get a list of all (advertised) articles of the online publication (beworbene Artikel im Online-Werbemittel).\n",
+        "operationId" : "listOnlinePublicationArticles",
+        "parameters" : [ {
+          "name" : "publication_id",
+          "in" : "path",
+          "description" : "The unique identifier of an online publication",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/OnlinePublicationArticlesResponse"
+            }
+          }
+        }
+      }
+    },
+    "/store-channels" : {
+      "get" : {
+        "tags" : [ "Stores – Filialdaten" ],
+        "summary" : "List all store channels",
+        "description" : "Use this operation to get a list of all store channels (Filialkanäle; e.g. \"Denner\" or \"Denner Satellit\").\n",
+        "operationId" : "listStoreChannels",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/DummyResponse"
+            }
+          }
+        }
+      }
+    },
+    "/store-services" : {
+      "get" : {
+        "tags" : [ "Stores – Filialdaten" ],
+        "summary" : "List all store services",
+        "description" : "Use this operation to get a list of all store services (Filialangebote; e.g. \"Humidor\" or \"Backstation\").\n",
+        "operationId" : "listStoreServices",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/DummyResponse"
+            }
+          }
+        }
+      }
+    },
+    "/stores" : {
+      "get" : {
+        "tags" : [ "Stores – Filialdaten" ],
+        "summary" : "List all stores",
+        "description" : "Use this operation to get a list of all stores (Filialen).\n",
+        "operationId" : "listStores",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/StoresResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "UUIDv4" : {
+      "type" : "string",
+      "description" : "Unique identifier"
+    },
+    "Locale" : {
+      "type" : "string",
+      "description" : "Locale"
+    },
+    "Translations" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Translation"
+      }
+    },
+    "Translation" : {
+      "type" : "object",
+      "properties" : {
+        "locale" : {
+          "$ref" : "#/definitions/Locale"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "Translated text value"
+        }
+      }
+    },
+    "Country" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Country code definition from ISO 3166",
+          "pattern" : "/^[A-Z]{2}$/"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      },
+      "description" : "Country"
+    },
+    "Date" : {
+      "type" : "string",
+      "format" : "date",
+      "description" : "Date; Format full-date of RFC3339 (http://xml2rfc.ietf.org/public/rfc/html/rfc3339.html#anchor14)"
+    },
+    "Time" : {
+      "type" : "string",
+      "description" : "Time; Format HH:MM:SS"
+    },
+    "DayOfWeek" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "Day of week; 0 = Sunday"
+    },
+    "Appearance" : {
+      "type" : "object",
+      "properties" : {
+        "from" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "to" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      }
+    },
+    "OnlineFilter" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "Store" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision store code"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Street"
+        },
+        "number" : {
+          "type" : "string",
+          "description" : "Street number"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Zip code",
+          "minimum" : 1000.0,
+          "maximum" : 9699.0
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "City"
+        },
+        "canton_code" : {
+          "type" : "string",
+          "description" : "Canton (state) code"
+        },
+        "country" : {
+          "$ref" : "#/definitions/Country"
+        },
+        "phone" : {
+          "type" : "string",
+          "description" : "Phone number"
+        },
+        "hotline" : {
+          "type" : "string",
+          "description" : "Hotline number"
+        },
+        "payment_types" : {
+          "type" : "array",
+          "description" : "Payment types",
+          "items" : {
+            "$ref" : "#/definitions/PaymentType"
+          }
+        },
+        "credit_card" : {
+          "type" : "boolean",
+          "description" : "Credit card can be used for payments?"
+        },
+        "opened_on" : {
+          "type" : "string",
+          "format" : "date",
+          "description" : "Opened on"
+        },
+        "closed_on" : {
+          "type" : "string",
+          "format" : "date",
+          "description" : "Closed on"
+        },
+        "renovation_from" : {
+          "type" : "string",
+          "format" : "date",
+          "description" : "Renovation from"
+        },
+        "renovation_to" : {
+          "type" : "string",
+          "format" : "date",
+          "description" : "Renovation to"
+        },
+        "longitude" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Geographic longitude"
+        },
+        "latitude" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Geographic latitude"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language spoken in the store"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "E-mail address"
+        },
+        "homepage" : {
+          "type" : "string",
+          "description" : "Website"
+        },
+        "parking_count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Reserved parking places for customers",
+          "minimum" : 0.0
+        },
+        "channel" : {
+          "$ref" : "#/definitions/StoreChannel"
+        },
+        "opening_times" : {
+          "type" : "array",
+          "description" : "Default opening times",
+          "items" : {
+            "$ref" : "#/definitions/OpeningTime"
+          }
+        },
+        "special_opening_times" : {
+          "type" : "array",
+          "description" : "Special opening times",
+          "items" : {
+            "$ref" : "#/definitions/SpecialOpeningTime"
+          }
+        },
+        "calendar_opening_times" : {
+          "type" : "array",
+          "description" : "Calendar opening times",
+          "items" : {
+            "$ref" : "#/definitions/CalendarOpeningTime"
+          }
+        },
+        "services" : {
+          "type" : "array",
+          "description" : "Services provided by the store",
+          "items" : {
+            "$ref" : "#/definitions/StoreService"
+          }
+        }
+      }
+    },
+    "PaymentType" : {
+      "type" : "string",
+      "description" : "Payment type"
+    },
+    "StoreService" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "appearances" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Appearance"
+          }
+        }
+      }
+    },
+    "OpeningTime" : {
+      "type" : "object",
+      "properties" : {
+        "weekday" : {
+          "$ref" : "#/definitions/DayOfWeek"
+        },
+        "opens_at" : {
+          "$ref" : "#/definitions/Time"
+        },
+        "closes_at" : {
+          "$ref" : "#/definitions/Time"
+        }
+      }
+    },
+    "SpecialOpeningTime" : {
+      "type" : "object",
+      "properties" : {
+        "day" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "opens_at" : {
+          "$ref" : "#/definitions/Time"
+        },
+        "closes_at" : {
+          "$ref" : "#/definitions/Time"
+        },
+        "reason" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "closed" : {
+          "type" : "boolean",
+          "description" : "Is the store closed on this day?"
+        }
+      }
+    },
+    "CalendarOpeningTime" : {
+      "type" : "object",
+      "properties" : {
+        "day" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "opens_at" : {
+          "$ref" : "#/definitions/Time"
+        },
+        "closes_at" : {
+          "$ref" : "#/definitions/Time"
+        }
+      }
+    },
+    "StoreChannel" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision channel code"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "Service" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "AdvertisedArticle" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique identifier",
+          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+        },
+        "code" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Article name"
+        },
+        "texts" : {
+          "$ref" : "#/definitions/ArticleTexts"
+        },
+        "prices" : {
+          "$ref" : "#/definitions/Prices"
+        },
+        "prices_by_quantity" : {
+          "$ref" : "#/definitions/QuantityPrices"
+        }
+      }
+    },
+    "ArticleTexts" : {
+      "type" : "object",
+      "properties" : {
+        "de" : {
+          "$ref" : "#/definitions/ArticleText"
+        },
+        "fr" : {
+          "$ref" : "#/definitions/ArticleText"
+        },
+        "it" : {
+          "$ref" : "#/definitions/ArticleText"
+        }
+      }
+    },
+    "ArticleText" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string",
+          "description" : "Localized article title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Localized article description"
+        },
+        "saving" : {
+          "type" : "string",
+          "description" : "Localized article saving text"
+        },
+        "base" : {
+          "type" : "string",
+          "description" : "Localized article base content text"
+        },
+        "info" : {
+          "type" : "string",
+          "description" : "Localized article info text"
+        },
+        "validity" : {
+          "type" : "string",
+          "description" : "Localized article validity text"
+        }
+      }
+    },
+    "Prices" : {
+      "type" : "object",
+      "properties" : {
+        "sales" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Sales price",
+          "minimum" : 0.0
+        },
+        "instead" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Instead price",
+          "minimum" : 0.0
+        },
+        "base" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Price for base amount",
+          "minimum" : 0.0
+        }
+      }
+    },
+    "QuantityPrices" : {
+      "type" : "object",
+      "properties" : {
+        "{amount}" : {
+          "$ref" : "#/definitions/QuantityPrice"
+        }
+      }
+    },
+    "QuantityPrice" : {
+      "type" : "object",
+      "properties" : {
+        "sales" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Sales price",
+          "minimum" : 0.0
+        },
+        "instead" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Instead price",
+          "minimum" : 0.0
+        }
+      }
+    },
+    "Stores" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Store"
+      }
+    },
+    "OnlineFilters" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/OnlineFilter"
+      }
+    },
+    "AdvertisedArticles" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/AdvertisedArticle"
+      }
+    },
+    "StoresResponse" : {
+      "type" : "object",
+      "properties" : {
+        "page_count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of pages"
+        },
+        "page_size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The page size"
+        },
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "stores" : {
+          "$ref" : "#/definitions/Stores"
+        }
+      }
+    },
+    "OnlineFiltersResponse" : {
+      "type" : "object",
+      "properties" : {
+        "page_count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of pages"
+        },
+        "page_size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The page size"
+        },
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "online_filters" : {
+          "$ref" : "#/definitions/OnlineFilters"
+        }
+      }
+    },
+    "OnlinePublicationArticlesResponse" : {
+      "type" : "object",
+      "properties" : {
+        "page_count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of pages"
+        },
+        "page_size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The page size"
+        },
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "articles" : {
+          "$ref" : "#/definitions/AdvertisedArticles"
+        }
+      }
+    },
+    "DummyResponse" : {
+      "type" : "object",
+      "properties" : {
+        "foo" : {
+          "type" : "string",
+          "description" : "bar"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "PageParam" : {
+      "name" : "page",
+      "in" : "query",
+      "description" : "The page number",
+      "required" : false,
+      "type" : "integer",
+      "format" : "int32"
+    },
+    "PageSizeParam" : {
+      "name" : "page_size",
+      "in" : "query",
+      "description" : "The page size",
+      "required" : false,
+      "type" : "integer",
+      "format" : "int32"
+    },
+    "PublicationIdPathParam" : {
+      "name" : "publication_id",
+      "in" : "path",
+      "description" : "The unique identifier of an online publication",
+      "required" : true,
+      "type" : "string",
+      "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+    }
+  }
+}
