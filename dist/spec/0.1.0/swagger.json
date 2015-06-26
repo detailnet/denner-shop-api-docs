@@ -40,54 +40,13 @@
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/ArticleGroupsResponse"
+              "$ref" : "#/definitions/DummyResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/online-filters" : {
-      "get" : {
-        "tags" : [ "Online Advertising – Online-Bewerbung" ],
-        "summary" : "List all online filters",
-        "description" : "Use this operation to get a list of all online filters (Angebotsfilter; e.g. \"Aktionen aktuelle Woche\" or \"Aktionen der Folgewoche\").\n",
-        "operationId" : "listOnlineFilters",
-        "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful listing",
-            "schema" : {
-              "$ref" : "#/definitions/OnlineFiltersResponse"
-            }
-          }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
-      }
-    },
-    "/online-groups" : {
       "get" : {
         "tags" : [ "Online Advertising – Online-Bewerbung" ],
         "summary" : "List all online groups",
@@ -112,15 +71,10 @@
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/OnlineGroupsResponse"
+              "$ref" : "#/definitions/OnlineFiltersResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/online-publications" : {
@@ -148,15 +102,10 @@
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/OnlinePublicationsResponse"
+              "$ref" : "#/definitions/DummyResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/online-publications/{publication_id}/articles" : {
@@ -194,12 +143,7 @@
               "$ref" : "#/definitions/OnlinePublicationArticlesResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/store-channels" : {
@@ -227,15 +171,10 @@
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/StoreChannelsResponse"
+              "$ref" : "#/definitions/DummyResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/store-services" : {
@@ -263,15 +202,10 @@
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/StoreServicesResponse"
+              "$ref" : "#/definitions/DummyResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
     },
     "/stores" : {
@@ -302,25 +236,8 @@
               "$ref" : "#/definitions/StoresResponse"
             }
           }
-        },
-        "security" : [ {
-          "appKey" : [ ]
-        }, {
-          "appId" : [ ]
-        } ]
+        }
       }
-    }
-  },
-  "securityDefinitions" : {
-    "appKey" : {
-      "type" : "apiKey",
-      "name" : "App-ID",
-      "in" : "header"
-    },
-    "appId" : {
-      "type" : "apiKey",
-      "name" : "App-Key",
-      "in" : "header"
     }
   },
   "definitions" : {
@@ -378,35 +295,6 @@
       "format" : "int32",
       "description" : "Day of week; 0 = Sunday"
     },
-    "Year" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "Year"
-    },
-    "Week" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "Week number (ISO 8601, week date system)"
-    },
-    "Price" : {
-      "type" : "number",
-      "format" : "float",
-      "description" : "Price in CHF"
-    },
-    "Quantity" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "Quantity"
-    },
-    "ContentSize" : {
-      "type" : "number",
-      "format" : "float",
-      "description" : "Content size"
-    },
-    "ContentUnit" : {
-      "type" : "string",
-      "description" : "Content unit"
-    },
     "Appearance" : {
       "type" : "object",
       "properties" : {
@@ -420,18 +308,19 @@
         }
       }
     },
-    "Url" : {
-      "type" : "string",
-      "description" : "Web url address"
-    },
-    "Phone" : {
-      "type" : "string",
-      "description" : "Formatted phone number"
-    },
-    "SortIndex" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "Index for sorting"
+    "OnlineFilter" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
     },
     "Store" : {
       "type" : "object",
@@ -475,10 +364,12 @@
           "$ref" : "#/definitions/Country"
         },
         "phone" : {
-          "$ref" : "#/definitions/Phone"
+          "type" : "string",
+          "description" : "Phone number"
         },
         "hotline" : {
-          "$ref" : "#/definitions/Phone"
+          "type" : "string",
+          "description" : "Hotline number"
         },
         "payment_types" : {
           "type" : "array",
@@ -530,7 +421,8 @@
           "description" : "E-mail address"
         },
         "homepage" : {
-          "$ref" : "#/definitions/Url"
+          "type" : "string",
+          "description" : "Website"
         },
         "parking_count" : {
           "type" : "integer",
@@ -566,7 +458,7 @@
           "type" : "array",
           "description" : "Services provided by the store",
           "items" : {
-            "$ref" : "#/definitions/AssignedStoreService"
+            "$ref" : "#/definitions/StoreService"
           }
         }
       }
@@ -574,6 +466,23 @@
     "PaymentType" : {
       "type" : "string",
       "description" : "Payment type"
+    },
+    "StoreService" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "appearances" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Appearance"
+          }
+        }
+      }
     },
     "OpeningTime" : {
       "type" : "object",
@@ -640,7 +549,7 @@
         }
       }
     },
-    "StoreService" : {
+    "Service" : {
       "type" : "object",
       "properties" : {
         "id" : {
@@ -648,58 +557,6 @@
         },
         "title" : {
           "$ref" : "#/definitions/Translations"
-        }
-      }
-    },
-    "AssignedStoreService" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "appearances" : {
-          "$ref" : "#/definitions/Appearances"
-        }
-      }
-    },
-    "ArticleGroup" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "code" : {
-          "type" : "string",
-          "description" : "Navision article group code (e.g. '01', '20', '01-60', '38-998')",
-          "pattern" : "/^\\d{2}(-\\d{2,3})?$/"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "children" : {
-          "$ref" : "#/definitions/ArticleGroups"
-        }
-      }
-    },
-    "AssignedArticleGroup" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "code" : {
-          "type" : "string",
-          "description" : "Navision article group code (e.g. '01', '20', '01-60', '38-998')",
-          "pattern" : "/^\\d{2}(-\\d{2,3})?$/"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "parent" : {
-          "$ref" : "#/definitions/AssignedArticleGroup"
         }
       }
     },
@@ -707,9 +564,11 @@
       "type" : "object",
       "properties" : {
         "id" : {
-          "$ref" : "#/definitions/UUIDv4"
+          "type" : "string",
+          "description" : "Unique identifier",
+          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
         },
-        "number" : {
+        "code" : {
           "type" : "string",
           "description" : "Navision article code",
           "pattern" : "/^\\d{6}$/"
@@ -718,384 +577,106 @@
           "type" : "string",
           "description" : "Article name"
         },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "description" : {
-          "$ref" : "#/definitions/Translations"
+        "texts" : {
+          "$ref" : "#/definitions/ArticleTexts"
         },
         "prices" : {
-          "$ref" : "#/definitions/ArticlePrices"
+          "$ref" : "#/definitions/Prices"
         },
-        "price_info" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "saving" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "quantity" : {
-          "$ref" : "#/definitions/Quantity"
-        },
-        "content" : {
-          "$ref" : "#/definitions/Content"
-        },
-        "base" : {
-          "$ref" : "#/definitions/BaseContent"
-        },
-        "validity" : {
-          "$ref" : "#/definitions/Validity"
-        },
-        "global_appearance" : {
-          "$ref" : "#/definitions/Appearance"
-        },
-        "featured_appearance" : {
-          "$ref" : "#/definitions/Appearance"
-        },
-        "promoted" : {
-          "type" : "boolean",
-          "description" : "Is a promoted article?"
-        },
-        "compared" : {
-          "type" : "boolean",
-          "description" : "Is a compared article?"
-        },
-        "online_group" : {
-          "$ref" : "#/definitions/AddignedOnlineGroup"
-        },
-        "article_group" : {
-          "$ref" : "#/definitions/AssignedArticleGroup"
-        },
-        "wine" : {
-          "$ref" : "#/definitions/ArticleWine"
-        }
-      }
-    },
-    "ArticlePrices" : {
-      "type" : "object",
-      "properties" : {
-        "sales" : {
-          "$ref" : "#/definitions/Price"
-        },
-        "instead" : {
-          "$ref" : "#/definitions/Price"
-        },
-        "base" : {
-          "$ref" : "#/definitions/Price"
-        },
-        "by_quantity" : {
+        "prices_by_quantity" : {
           "$ref" : "#/definitions/QuantityPrices"
         }
       }
     },
+    "ArticleTexts" : {
+      "type" : "object",
+      "properties" : {
+        "de" : {
+          "$ref" : "#/definitions/ArticleText"
+        },
+        "fr" : {
+          "$ref" : "#/definitions/ArticleText"
+        },
+        "it" : {
+          "$ref" : "#/definitions/ArticleText"
+        }
+      }
+    },
+    "ArticleText" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string",
+          "description" : "Localized article title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Localized article description"
+        },
+        "saving" : {
+          "type" : "string",
+          "description" : "Localized article saving text"
+        },
+        "base" : {
+          "type" : "string",
+          "description" : "Localized article base content text"
+        },
+        "info" : {
+          "type" : "string",
+          "description" : "Localized article info text"
+        },
+        "validity" : {
+          "type" : "string",
+          "description" : "Localized article validity text"
+        }
+      }
+    },
+    "Prices" : {
+      "type" : "object",
+      "properties" : {
+        "sales" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Sales price",
+          "minimum" : 0.0
+        },
+        "instead" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Instead price",
+          "minimum" : 0.0
+        },
+        "base" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Price for base amount",
+          "minimum" : 0.0
+        }
+      }
+    },
     "QuantityPrices" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/QuantityPrice"
+      "type" : "object",
+      "properties" : {
+        "{amount}" : {
+          "$ref" : "#/definitions/QuantityPrice"
+        }
       }
     },
     "QuantityPrice" : {
       "type" : "object",
       "properties" : {
-        "quantity" : {
-          "$ref" : "#/definitions/Quantity"
-        },
         "sales" : {
-          "$ref" : "#/definitions/Price"
-        },
-        "instead" : {
-          "$ref" : "#/definitions/Price"
-        }
-      }
-    },
-    "Content" : {
-      "type" : "object",
-      "properties" : {
-        "size" : {
-          "$ref" : "#/definitions/ContentSize"
-        },
-        "unit" : {
-          "$ref" : "#/definitions/ContentUnit"
-        }
-      }
-    },
-    "BaseContent" : {
-      "type" : "object",
-      "properties" : {
-        "size" : {
-          "$ref" : "#/definitions/ContentSize"
-        },
-        "unit" : {
-          "$ref" : "#/definitions/ContentUnit"
-        },
-        "text" : {
-          "$ref" : "#/definitions/Translations"
-        }
-      }
-    },
-    "Validity" : {
-      "type" : "object",
-      "properties" : {
-        "from" : {
-          "$ref" : "#/definitions/Date"
-        },
-        "to" : {
-          "$ref" : "#/definitions/Date"
-        },
-        "text" : {
-          "$ref" : "#/definitions/Translations"
-        }
-      }
-    },
-    "ArticleWine" : {
-      "type" : "object",
-      "properties" : {
-        "country" : {
-          "$ref" : "#/definitions/Country"
-        },
-        "region" : {
-          "$ref" : "#/definitions/Region"
-        },
-        "type" : {
-          "$ref" : "#/definitions/WineType"
-        },
-        "year" : {
-          "$ref" : "#/definitions/Year"
-        },
-        "fits_with" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "varietal" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "character" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "temperature" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "awards" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "storage" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "rating" : {
-          "$ref" : "#/definitions/Rating"
-        },
-        "stock" : {
-          "$ref" : "#/definitions/Stock"
-        },
-        "shop_url" : {
-          "$ref" : "#/definitions/Url"
-        }
-      }
-    },
-    "Region" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        }
-      }
-    },
-    "WineType" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        }
-      }
-    },
-    "Rating" : {
-      "type" : "object",
-      "properties" : {
-        "value" : {
           "type" : "number",
           "format" : "float",
-          "description" : "Rating value",
-          "minimum" : 0.0,
-          "maximum" : 5.0
-        },
-        "total" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Ratng count",
+          "description" : "Sales price",
           "minimum" : 0.0
         },
-        "valid" : {
-          "type" : "boolean",
-          "description" : "Is a valid rating?"
-        }
-      }
-    },
-    "Stock" : {
-      "type" : "object",
-      "properties" : {
-        "value" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Navision stock count, might be negative"
-        },
-        "code" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Navision stock code",
+        "instead" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Instead price",
           "minimum" : 0.0
-        },
-        "message" : {
-          "$ref" : "#/definitions/Translations"
         }
-      }
-    },
-    "OnlinePublication" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "year" : {
-          "$ref" : "#/definitions/Year"
-        },
-        "week" : {
-          "$ref" : "#/definitions/Week"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "list_title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "validity" : {
-          "$ref" : "#/definitions/Validity"
-        },
-        "filters" : {
-          "type" : "array",
-          "description" : "Online filter with appearances (and no localised title)",
-          "items" : {
-            "$ref" : "#/definitions/AssignedOnlineFilter"
-          }
-        },
-        "global_appearance" : {
-          "$ref" : "#/definitions/Appearance"
-        },
-        "featured_appearance" : {
-          "$ref" : "#/definitions/Appearance"
-        },
-        "promotion_type" : {
-          "$ref" : "#/definitions/PromotionType"
-        },
-        "sort_index" : {
-          "$ref" : "#/definitions/SortIndex"
-        },
-        "articles" : {
-          "$ref" : "#/definitions/AdvertisedArticles"
-        }
-      }
-    },
-    "PromotionType" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "code" : {
-          "type" : "string",
-          "description" : "Navision promotion type code"
-        },
-        "name" : {
-          "type" : "string"
-        }
-      }
-    },
-    "OnlineFilter" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "sort_index" : {
-          "$ref" : "#/definitions/SortIndex"
-        }
-      }
-    },
-    "AssignedOnlineFilter" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "appearances" : {
-          "$ref" : "#/definitions/Appearances"
-        }
-      }
-    },
-    "OnlineGroup" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "code" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Navision online group code"
-        },
-        "sort_index" : {
-          "$ref" : "#/definitions/SortIndex"
-        },
-        "disabled" : {
-          "type" : "boolean",
-          "description" : "Is disabled?"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "children" : {
-          "$ref" : "#/definitions/OnlineGroups"
-        }
-      }
-    },
-    "AddignedOnlineGroup" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "code" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Navision online group code"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "parent" : {
-          "$ref" : "#/definitions/AddignedOnlineGroup"
-        }
-      }
-    },
-    "Appearances" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/Appearance"
       }
     },
     "Stores" : {
@@ -1104,46 +685,16 @@
         "$ref" : "#/definitions/Store"
       }
     },
-    "StoreChannels" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/StoreChannel"
-      }
-    },
-    "StoreServices" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/StoreService"
-      }
-    },
-    "ArticleGroups" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/ArticleGroup"
-      }
-    },
-    "AdvertisedArticles" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/AdvertisedArticle"
-      }
-    },
-    "OnlinePublications" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/OnlinePublication"
-      }
-    },
     "OnlineFilters" : {
       "type" : "array",
       "items" : {
         "$ref" : "#/definitions/OnlineFilter"
       }
     },
-    "OnlineGroups" : {
+    "AdvertisedArticles" : {
       "type" : "array",
       "items" : {
-        "$ref" : "#/definitions/OnlineGroup"
+        "$ref" : "#/definitions/AdvertisedArticle"
       }
     },
     "StoresResponse" : {
@@ -1166,75 +717,6 @@
         },
         "stores" : {
           "$ref" : "#/definitions/Stores"
-        }
-      }
-    },
-    "StoreChannelsResponse" : {
-      "type" : "object",
-      "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
-        "store_channels" : {
-          "$ref" : "#/definitions/StoreChannels"
-        }
-      }
-    },
-    "StoreServicesResponse" : {
-      "type" : "object",
-      "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
-        "store_services" : {
-          "$ref" : "#/definitions/StoreServices"
-        }
-      }
-    },
-    "ArticleGroupsResponse" : {
-      "type" : "object",
-      "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
-        "article_groups" : {
-          "$ref" : "#/definitions/ArticleGroups"
         }
       }
     },
@@ -1261,52 +743,6 @@
         }
       }
     },
-    "OnlineGroupsResponse" : {
-      "type" : "object",
-      "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
-        "online_groups" : {
-          "$ref" : "#/definitions/OnlineGroups"
-        }
-      }
-    },
-    "OnlinePublicationsResponse" : {
-      "type" : "object",
-      "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
-        "online_publications" : {
-          "$ref" : "#/definitions/OnlinePublications"
-        }
-      }
-    },
     "OnlinePublicationArticlesResponse" : {
       "type" : "object",
       "properties" : {
@@ -1327,6 +763,15 @@
         },
         "articles" : {
           "$ref" : "#/definitions/AdvertisedArticles"
+        }
+      }
+    },
+    "DummyResponse" : {
+      "type" : "object",
+      "properties" : {
+        "foo" : {
+          "type" : "string",
+          "description" : "bar"
         }
       }
     }
