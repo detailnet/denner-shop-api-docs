@@ -270,11 +270,11 @@ TAG=<tag_nr>
 
 # Unzip in versions directory
 cd  /export/www/versions/denner-portal-api-docs
-unzip /home/{$USER}/denner-portal-api-docs-{$TAG}.zip
+unzip /home/${USER}/denner-portal-api-docs-${TAG}.zip
 
 # Link to the new version
 cd /export/www/production
-rm  denner-portal-api-docs && ln -s ../versions/denner-portal-api-docs/{$TAG} denner-portal-api-docs
+rm  denner-portal-api-docs && ln -s ../versions/denner-portal-api-docs/${TAG} denner-portal-api-docs
 
 # Cleanup unneeded files
 ```
