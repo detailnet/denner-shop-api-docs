@@ -249,7 +249,7 @@ Procedure to package the project and deploy on lindetailpro01.detailnet.ch
 USER=<unix username>
 TAG=<tag_nr>
 
-# Tag version is still not done
+# Tag version if still not done
 git tag -a ${TAG} -m "Version tag ${TAG}"
 git push upstream --tags
 
@@ -275,4 +275,6 @@ unzip /home/{$USER}/denner-portal-api-docs-{$TAG}.zip
 # Link to the new version
 cd /export/www/production
 rm  denner-portal-api-docs && ln -s ../versions/denner-portal-api-docs/{$TAG} denner-portal-api-docs
+
+# Cleanup unneeded files
 ```
