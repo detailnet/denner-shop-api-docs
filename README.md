@@ -242,7 +242,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Building on Protobox
-Windows protobox user might have problem executing the `npm install`, because of the cretion of symbolic links. 
+Windows protobox user might have problem executing the `npm install`, because of the creation of symbolic links. 
 
 The solution is following:
 1. `npm install --no-bin-links`
