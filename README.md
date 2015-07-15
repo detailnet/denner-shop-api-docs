@@ -241,6 +241,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+## Building on Protobox
+Windows protobox user might have problem executing the `npm install`, because of the cretion of symbolic links. 
+
+The solution is following:
+1. `npm install --no-bin-links`
+2. `./node_modules/gulp/bin/gulp.js`
+
+
 ## Deploy
 Procedure to package the project and deploy on lindetailpro01.detailnet.ch
 
