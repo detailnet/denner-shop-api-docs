@@ -30,7 +30,7 @@ var banner = ['/**',
  */
 gulp.task('clean', function() {
   return gulp
-    .src('./dist', {read: false})
+    .src(['./dist', '!./dist{,CNAME}'], {read: false})
     .pipe(clean({force: true}))
     .on('error', log);
 });
@@ -125,12 +125,12 @@ gulp.task('copy', ['less'], function() {
 
 gulp.task('deploy', function() {
   return gulp.src('./dist/**/*')
-      .pipe(ghPages({
-        remoteUrl: 'git@github.com:detailnet/denner-portal-api-docs.git',
-        origin: 'origin',
-        branch: 'gh-pages',
-        message: 'Deployed latest distribution'
-      }));
+    .pipe(ghPages({
+      remoteUrl: 'git@github.com:detailnet/denner-portal-api-docs.git',
+      origin: 'origin',
+      branch: 'gh-pages',
+      message: 'Deployed latest distribution'
+    }));
 });
 
 /**
