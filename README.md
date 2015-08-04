@@ -245,44 +245,13 @@ limitations under the License.
 Windows protobox user might have problem executing the `npm install`, because of the creation of symbolic links. 
 
 The solution is following:
+
 1. `npm install --no-bin-links`
 2. `./node_modules/gulp/bin/gulp.js`
 
 
 ## Deploy
-Procedure to package the project and deploy on lindetailpro01.detailnet.ch
 
-```bash
-# Setup variables
-USER=<unix username>
-TAG=<tag_nr>
+Just run the following command:
 
-# Tag version if still not done
-git tag -a ${TAG} -m "Version tag ${TAG}"
-git push upstream --tags
-
-# Archive dist subdirectory
-git archive -o ../denner-portal-api-docs-${TAG}.zip --prefix=${TAG}/ ${TAG}:dist
-
-# Copy archive to target system
-scp ../denner-portal-api-docs-${TAG}.zip ${USER}@lindetailpro01.detailnet.ch:
-ssh ${USER}@lindetailpro01.detailnet.ch
-
-# Change to deploy user
-su -
-su - deploy
-
-# Setup variables (again)
-USER=<unix username>
-TAG=<tag_nr>
-
-# Unzip in versions directory
-cd  /export/www/versions/denner-portal-api-docs
-unzip /home/${USER}/denner-portal-api-docs-${TAG}.zip
-
-# Link to the new version
-cd /export/www/production
-rm  denner-portal-api-docs && ln -s ../versions/denner-portal-api-docs/${TAG} denner-portal-api-docs
-
-# Cleanup unneeded files
-```
+    gulp deploy
