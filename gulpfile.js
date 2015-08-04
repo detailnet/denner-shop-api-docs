@@ -16,6 +16,7 @@ var header = require('gulp-header');
 var pkg = require('./package.json');
 var order = require('gulp-order');
 var jshint = require('gulp-jshint');
+var ghPages = require('gulp-gh-pages');
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -62,7 +63,6 @@ gulp.task('lint', function () {
  * Build a distribution
  */
 gulp.task('dist', ['clean','lint'], function() {
-
   return es.merge(
       gulp.src([
         './src/main/javascript/**/*.js',
@@ -87,7 +87,6 @@ gulp.task('dist', ['clean','lint'], function() {
  * Processes less files into CSS files
  */
 gulp.task('less', ['clean'], function() {
-
   return gulp
     .src([
       './src/main/less/screen.less',
@@ -101,12 +100,10 @@ gulp.task('less', ['clean'], function() {
     .pipe(connect.reload());
 });
 
-
 /**
  * Copy lib and html folders
  */
 gulp.task('copy', ['less'], function() {
-
   // copy JavaScript files inside lib folder
   gulp
     .src(['./lib/**/*.{js,map}'])
@@ -124,6 +121,16 @@ gulp.task('copy', ['less'], function() {
     .src(['./spec/**/*'])
     .pipe(gulp.dest('./dist/spec'))
     .on('error', log);
+});
+
+gulp.task('deploy', function() {
+  return gulp.src('./dist/**/*')
+      .pipe(ghPages({
+        remoteUrl: 'git@github.com:detailnet/denner-portal-api-docs.git',
+        origin: 'origin',
+        branch: 'gh-pages',
+        message: 'Deployed latest distribution'
+      }));
 });
 
 /**
@@ -149,6 +156,6 @@ function log(error) {
   console.error(error.toString && error.toString());
 }
 
-
-gulp.task('default', ['dist', 'copy']);
+gulp.task('build', ['dist', 'copy']);
 gulp.task('serve', ['connect', 'watch']);
+gulp.task('default', ['build']);

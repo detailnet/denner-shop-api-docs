@@ -12,3 +12,4 @@ swagger-ui.sublime-workspace
 node_modules/*
 /nbproject/private/
 npm-debug.log
+.publish
