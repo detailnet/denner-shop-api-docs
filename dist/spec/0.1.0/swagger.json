@@ -1,46 +1,73 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "RESTful API for the Denner Portal",
-    "version" : "0.1.0",
-    "title" : "Denner Portal 2.0",
+    "description" : "RESTful API for the Denner Mobile App",
+    "version" : "1.0.0",
+    "title" : "Denner Mobile Web Service",
     "contact" : {
       "name" : "DETAIL NET",
-      "email" : "support+denner-api@detailnet.ch"
+      "email" : "support+denner-mobile-api@detailnet.ch"
     }
   },
-  "host" : "denner-portal.detailnet.ch",
-  "basePath" : "/api",
+  "host" : "denner-mobile-api.detailnet.ch",
+  "basePath" : "/v1",
   "schemes" : [ "https" ],
   "consumes" : [ "application/json" ],
   "produces" : [ "application/json" ],
   "paths" : {
-    "/article-groups" : {
+    "/banners" : {
       "get" : {
-        "tags" : [ "Articles and Promotions – Artikel und Aktionen" ],
-        "summary" : "List all article groups",
-        "description" : "Use this operation to get a list of all article groups (Warengruppen).\n",
-        "operationId" : "listArticleGroups",
+        "tags" : [ "Banner – Bannerdaten" ],
+        "summary" : "List all banners",
+        "description" : "Use this operation to get a list of all banners.\n",
+        "operationId" : "listBanners",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "User-Agent",
+          "in" : "header",
+          "description" : "User agent\n",
+          "required" : false,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/DummyResponse"
+              "$ref" : "#/definitions/BannersResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "banners" : [ {
+                  "id" : "73f91ae8-fa76-4f76-86d9-78f6bcd5d3ab",
+                  "types" : [ "promotion", "wine" ],
+                  "closable" : true,
+                  "position" : "top",
+                  "title" : "20% auf alle Lindt-Artikel*",
+                  "html" : "Freitag, 27. und Samstag, 28. November 2015<br>20% auf alle Lindt-Artikel*– auch auf bestehende Aktionspreise!<br>*nicht mit anderen Gutscheinen und Bons kumulierbar. Solange Vorrat.",
+                  "link" : null,
+                  "image" : {
+                    "image_url" : "https://denner-assets.s3-eu-west-1.amazonaws.com/banners/ec63c8de-eb6d-41f4-813b-35cd6ef8631f/lindt.png"
+                  },
+                  "campaign" : {
+                    "source" : null,
+                    "medium" : null,
+                    "name" : null
+                  }
+                } ]
+              }
             }
           }
         }
@@ -48,161 +75,352 @@
     },
     "/online-filters" : {
       "get" : {
-        "tags" : [ "Online Advertising – Online-Bewerbung" ],
-        "summary" : "List all online groups",
-        "description" : "Use this operation to get a list of all online groups (Internet-Sortimente).\n",
-        "operationId" : "listOnlineGroups",
+        "tags" : [ "Promotion – Aktionsdaten" ],
+        "summary" : "List the online filters of a given type",
+        "description" : "Use this operation to get a list of all online filters (Angebotsfilter; e.g. \"Aktionen aktuelle Woche\" or \"Aktionen der Folgewoche\").\n",
+        "operationId" : "listOnlineFilters",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Type of online filters to list (supported are \"promotion\" and \"wine\")",
+          "required" : true,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
               "$ref" : "#/definitions/OnlineFiltersResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "online_filters" : [ {
+                  "id" : "3734ef1f-4c1a-428c-af24-7d85af7c5041",
+                  "title" : "Aktionen der Folgewoche"
+                }, {
+                  "id" : "f5064fb7-c5d5-467e-9bdb-e5c4ed4dea6c",
+                  "title" : "Aktionen aktuelle Woche"
+                } ]
+              }
             }
           }
         }
       }
     },
-    "/online-publications" : {
+    "/online-filters/{filter_id}/online-groups" : {
       "get" : {
-        "tags" : [ "Online Advertising – Online-Bewerbung" ],
-        "summary" : "List all online publications",
-        "description" : "Use this operation to get a list of all publications targeted at online channels, e.g. denner.ch or the Mobile App (Online-Werbemittel).\n",
-        "operationId" : "listOnlinePublications",
+        "tags" : [ "Promotion – Aktionsdaten" ],
+        "summary" : "List the online groups appearing in given online filter",
+        "description" : "Use this operation to get a list of all online groups (Internet-Sortimente) for a specific online filter.\n",
+        "operationId" : "listOnlineGroupsByOnlineFilter",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful listing",
-            "schema" : {
-              "$ref" : "#/definitions/DummyResponse"
-            }
-          }
-        }
-      }
-    },
-    "/online-publications/{publication_id}/articles" : {
-      "get" : {
-        "tags" : [ "Online Advertising – Online-Bewerbung" ],
-        "summary" : "List all (advertised) articles of a single online publication",
-        "description" : "Use this operation to get a list of all (advertised) articles of the online publication (beworbene Artikel im Online-Werbemittel).\n",
-        "operationId" : "listOnlinePublicationArticles",
-        "parameters" : [ {
-          "name" : "publication_id",
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "filter_id",
           "in" : "path",
-          "description" : "The unique identifier of an online publication",
+          "description" : "The unique identifier of an online filter",
           "required" : true,
           "type" : "string",
           "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
-        }, {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/OnlinePublicationArticlesResponse"
+              "$ref" : "#/definitions/OnlineGroupsResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "online_groups" : [ {
+                  "id" : "7627150d-36bd-4867-89b2-091800a03d24",
+                  "title" : "Frischprodukte",
+                  "children" : [ {
+                    "id" : "58afec5c-ece9-4b66-bc55-00d6dc1b65b8",
+                    "title" : "Milchprodukte",
+                    "children" : [ ]
+                  }, {
+                    "id" : "e5216167-9da5-41d6-b7b3-96362b60de89",
+                    "title" : "Eier",
+                    "children" : [ ]
+                  } ]
+                } ]
+              }
             }
           }
         }
       }
     },
-    "/store-channels" : {
+    "/online-filters/{filter_id}/online-publications" : {
       "get" : {
-        "tags" : [ "Stores – Filialdaten" ],
-        "summary" : "List all store channels",
-        "description" : "Use this operation to get a list of all store channels (Filialkanäle; e.g. \"Denner\" or \"Denner Satellit\").\n",
-        "operationId" : "listStoreChannels",
+        "tags" : [ "Promotion – Aktionsdaten" ],
+        "summary" : "List the online publications appearing in given online filter",
+        "description" : "Use this operation to get a list of all publications (and the contained articles) for a specific online filter (e.g. \"Wochenaktionen\" and \"Wochenend-Knaller\", which are both appearing within \"Aktionen aktuelle Woche\").\n",
+        "operationId" : "listOnlinePublicationsByOnlineFilter",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "filter_id",
+          "in" : "path",
+          "description" : "The unique identifier of an online filter",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/DummyResponse"
+              "$ref" : "#/definitions/OnlinePublicationsResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "online_publications" : [ {
+                  "id" : "2c8616be-07c8-4fba-83a2-ee780449ff32",
+                  "title" : "Wochenaktionen",
+                  "validity" : {
+                    "from" : "2015-06-23",
+                    "to" : "2015-06-29",
+                    "text" : "23.06.2015 bis 29.06.2015, solange Vorrat"
+                  },
+                  "articles" : [ {
+                    "id" : "dfbc2b0d-0f47-4ac2-86e5-3bd4f9936ef6",
+                    "article_id" : "051273",
+                    "title" : "Mandorla Primitivo di Puglia IGT",
+                    "description" : "2013, Apulien, Italien, 6 x 75 cl",
+                    "prices" : {
+                      "sales" : 59.4,
+                      "instead" : 68.4,
+                      "base" : 1.32,
+                      "by_quantity" : [ {
+                        "quantity" : 1,
+                        "sales" : 9.9,
+                        "instead" : 11.4
+                      }, {
+                        "quantity" : 6,
+                        "sales" : 59.4,
+                        "instead" : 68.4
+                      } ]
+                    },
+                    "price_info" : "Konkurrenzvergleich",
+                    "unit_price_info" : "Einzelflasche: 9.90 statt 11.40",
+                    "dots" : [ {
+                      "id" : "d4bca729-10ad-482c-bdda-b1a1398173b5",
+                      "type" : {
+                        "id" : "semi_price_winehit"
+                      },
+                      "images" : [ {
+                        "type" : "image/svg+xml",
+                        "url" : "https://s3-eu-west-1.amazonaws.com/denner-assets/dots/d4bca729-10ad-482c-bdda-b1a1398173b5/051273-de.svg"
+                      } ]
+                    } ],
+                    "panel" : "9.- sparen",
+                    "quantity" : 6,
+                    "content" : {
+                      "text" : "75 cl"
+                    },
+                    "base" : {
+                      "text" : "10 cl"
+                    },
+                    "validity" : {
+                      "from" : "2015-06-23",
+                      "to" : "2015-06-29",
+                      "short_text" : "Gültig von 23.06.–29.06.",
+                      "long_text" : "Angebot gültig von 23.06.2015 bis 29.06.2015"
+                    },
+                    "availability_limitations" : {
+                      "region" : "Nur in der deutschen und französischen Schweiz erhältlich",
+                      "store" : "Nur in Filialen mit Frischprodukten erhältlich"
+                    },
+                    "promoted" : true,
+                    "compared" : true,
+                    "cooling" : 0,
+                    "eco_labels" : [ {
+                      "id" : "66d94617-bbd7-477e-ae66-183deb67ba5b",
+                      "code" : "bio"
+                    } ],
+                    "packshot" : {
+                      "image_url" : "https://denner-assets.s3-eu-west-1.amazonaws.com/assets/2059e18a-9e93-452e-9eef-f9d7605a31ad/022617.png"
+                    },
+                    "wine" : {
+                      "country" : {
+                        "id" : "IT",
+                        "title" : "Italien"
+                      },
+                      "region" : {
+                        "id" : "b19c42bf-ed78-46ff-ad6f-fc688a059e6a",
+                        "title" : "Apulien"
+                      },
+                      "type" : {
+                        "id" : 2,
+                        "title" : "Rotwein"
+                      },
+                      "year" : 2013,
+                      "fits_with" : "Pasta, Fleisch mit würzigen Saucen",
+                      "varietal" : "Primitivo",
+                      "character" : "Dunkles Rubinrot. In der Nase Aromen von roten Beeren, reifen Kirschen und Brombeeren. Geschmeidig im Gaumen.",
+                      "temperature" : "16-18 °C",
+                      "awards" : "",
+                      "storage" : "3 Jahre",
+                      "rating" : {
+                        "value" : 4.45,
+                        "total" : 11,
+                        "valid" : true
+                      },
+                      "shop" : {
+                        "url" : "http://denner-wineshop.ch/skuredirect/051273/",
+                        "quantity" : 6,
+                        "prices" : {
+                          "sales" : 68.4,
+                          "base" : 1.52,
+                          "by_quantity" : [ {
+                            "quantity" : 1,
+                            "sales" : 11.4
+                          }, {
+                            "quantity" : 6,
+                            "sales" : 68.4
+                          } ]
+                        },
+                        "stock" : {
+                          "value" : -15,
+                          "code" : 2,
+                          "message" : "Derzeit nicht bestellbar"
+                        }
+                      }
+                    }
+                  } ]
+                } ]
+              }
             }
           }
         }
       }
     },
-    "/store-services" : {
+    "/store-filters" : {
       "get" : {
-        "tags" : [ "Stores – Filialdaten" ],
-        "summary" : "List all store services",
-        "description" : "Use this operation to get a list of all store services (Filialangebote; e.g. \"Humidor\" or \"Backstation\").\n",
-        "operationId" : "listStoreServices",
+        "tags" : [ "Store – Filialdaten" ],
+        "summary" : "List all store filters",
+        "description" : "Use this operation to get a list of the store filters",
+        "operationId" : "listStoreFilters",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "de"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
-              "$ref" : "#/definitions/DummyResponse"
+              "$ref" : "#/definitions/StoreFiltersResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "store_filters" : [ {
+                  "id" : "opening",
+                  "title" : "Öffnungszeit",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "open_on",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Jetzt geöffnet",
+                    "value" : "now"
+                  }, {
+                    "title" : "Heute bis 20 Uhr geöffnet",
+                    "value" : "20:00:00"
+                  } ]
+                }, {
+                  "id" : "services",
+                  "title" : "Besondere Sortimente",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "services",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Humidor",
+                    "value" : "acb911fb-b7e3-480f-ab91-1109e750892a"
+                  }, {
+                    "title" : "Bordeaux Grands Crus",
+                    "value" : "85aa57ad-2bf3-48e5-a1a0-813889cbae26"
+                  }, {
+                    "title" : "Früchte und Gemüse",
+                    "value" : "d7b4925e-79f8-415f-9436-0adb4a9cc4de"
+                  }, {
+                    "title" : "Früchte und Gemüse im Offenverkauf",
+                    "value" : "47191064-ad2e-482a-a5cf-2aa32d0b8116"
+                  }, {
+                    "title" : "Backstation",
+                    "value" : "57d0301a-fd5d-4dce-ab0d-75dee1d16631"
+                  } ]
+                }, {
+                  "id" : "channels",
+                  "title" : "Filialtyp",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "channel",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Denner",
+                    "value" : "5d1c3dd5-35a9-4c66-ab20-3409ea640334"
+                  }, {
+                    "title" : "Denner Satellit und Denner Express",
+                    "value" : "18549f95-6471-4e21-968f-8a0bf2e0f79b"
+                  } ]
+                } ]
+              }
             }
           }
         }
@@ -210,30 +428,646 @@
     },
     "/stores" : {
       "get" : {
-        "tags" : [ "Stores – Filialdaten" ],
+        "tags" : [ "Store – Filialdaten" ],
         "summary" : "List all stores",
-        "description" : "Use this operation to get a list of all stores (Filialen).\n",
+        "description" : "Use this operation to get a list of all stores (Filialen).\n\nThe query param \"filter\" supports the following properties:\n- __opening__:\n  [{\"property\":\"opening\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"now\",\"20:00:00\"]}]\n- __services__ (e.g. \"Humidor):\n  [{\"property\":\"services\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"acb911fb-b7e3-480f-ab91-1109e750892a\"]}]\n- __channels__ (e.g. \"Denner Satellit und Denner Express):\n  [{\"property\":\"channels\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"18549f95-6471-4e21-968f-8a0bf2e0f79b\"]}]\n",
         "operationId" : "listStores",
         "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "The page number",
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "application/json"
         }, {
-          "name" : "page_size",
-          "in" : "query",
-          "description" : "The page size",
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
           "required" : false,
-          "type" : "integer",
-          "format" : "int32"
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- __property__:\n  Property to filter on.\n- __operator__:\n  Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- __type__:\n  Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- __value__:\n  Value. Must be of the defined type.\n\n\nExample:\n[{\"property\":\"id\",\"operator\":\"eq\",\"type\":\"string\",\"value\":\"bcb8a388-8998-4d08-85a6-4864199704ee\"}]\n",
+          "required" : false,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
             "description" : "Successful listing",
             "schema" : {
               "$ref" : "#/definitions/StoresResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "total_items" : 794,
+                "stores" : [ {
+                  "id" : "bcb8a388-8998-4d08-85a6-4864199704ee",
+                  "code" : 302,
+                  "name" : null,
+                  "address" : "Werdstrasse",
+                  "number" : "36",
+                  "zip_code" : 8004,
+                  "canton_code" : "ZH",
+                  "city" : "Zürich",
+                  "country_code" : "CH",
+                  "phone" : "044 240 22 83",
+                  "hotline" : "0848 99 66 33",
+                  "payment_types" : [ "cash", "euro", "maestro", "post" ],
+                  "credit_card" : true,
+                  "open_from" : "1998-08-01",
+                  "open_to" : null,
+                  "renovation_from" : "2015-06-25",
+                  "renovation_to" : "2015-06-26",
+                  "latitude" : 47.3728447,
+                  "longitude" : 8.5295153,
+                  "language" : "de",
+                  "email" : "info@denner.ch",
+                  "homepage" : "http://www.denner.ch",
+                  "parking_count" : 0,
+                  "channel" : {
+                    "id" : "5d1c3dd5-35a9-4c66-ab20-3409ea640334",
+                    "title" : "Denner"
+                  },
+                  "opening_times" : [ {
+                    "weekday" : 1,
+                    "open_from" : "08:00",
+                    "open_to" : "20:00"
+                  }, {
+                    "weekday" : 2,
+                    "open_from" : "08:00",
+                    "open_to" : "20:00"
+                  }, {
+                    "weekday" : 3,
+                    "open_from" : "08:00",
+                    "open_to" : "20:00"
+                  }, {
+                    "weekday" : 4,
+                    "open_from" : "08:00",
+                    "open_to" : "20:00"
+                  }, {
+                    "weekday" : 5,
+                    "open_from" : "08:00",
+                    "open_to" : "20:00"
+                  }, {
+                    "weekday" : 6,
+                    "open_from" : "08:00",
+                    "open_to" : "12:00"
+                  }, {
+                    "weekday" : 6,
+                    "open_from" : "14:00",
+                    "open_to" : "20:00"
+                  } ],
+                  "special_opening_times" : [ {
+                    "day" : "2015-06-25",
+                    "reason" : "Umbau",
+                    "closed" : true
+                  }, {
+                    "day" : "2015-06-26",
+                    "reason" : "Umbau",
+                    "closed" : true
+                  }, {
+                    "day" : "2015-06-28",
+                    "open_from" : "10:00",
+                    "open_to" : "16:00",
+                    "reason" : "Sonntagsverkauf",
+                    "closed" : false
+                  } ],
+                  "services" : [ {
+                    "id" : "acb911fb-b7e3-480f-ab91-1109e750892a",
+                    "title" : "Humidor"
+                  }, {
+                    "id" : "d7b4925e-79f8-415f-9436-0adb4a9cc4de",
+                    "title" : "Früchte und Gemüse"
+                  }, {
+                    "id" : "57d0301a-fd5d-4dce-ab0d-75dee1d16631",
+                    "title" : "Backstation"
+                  } ]
+                } ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wine-filters" : {
+      "get" : {
+        "tags" : [ "Wine – Weindaten" ],
+        "summary" : "List all wine filters",
+        "description" : "Use this operation to get a list of the wine filters",
+        "operationId" : "listWineFilters",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "de"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/WineFiltersResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "wine_filters" : [ {
+                  "id" : "types",
+                  "title" : "Weintyp",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "type",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Rotwein",
+                    "value" : 2
+                  }, {
+                    "title" : "Bordeaux Grand Cru",
+                    "value" : 6
+                  }, {
+                    "title" : "Weisswein",
+                    "value" : 1
+                  }, {
+                    "title" : "Schaumwein",
+                    "value" : 4
+                  }, {
+                    "title" : "Rosé",
+                    "value" : 3
+                  }, {
+                    "id" : "5",
+                    "title" : "Andere",
+                    "value" : 5
+                  } ]
+                }, {
+                  "id" : "countries",
+                  "title" : "Land",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "country",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Argentinien",
+                    "value" : "AR"
+                  }, {
+                    "title" : "Australien",
+                    "value" : "AU"
+                  }, {
+                    "title" : "Chile",
+                    "value" : "CL"
+                  }, {
+                    "title" : "Deutschland",
+                    "value" : "DE"
+                  } ]
+                }, {
+                  "id" : "regions",
+                  "title" : "Region",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "region",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Abruzzen",
+                    "value" : "3b7dfc06-94bd-45af-8baa-e269b8556659"
+                  }, {
+                    "title" : "Alentejo",
+                    "value" : "826e51d0-a1bf-4b47-882b-e3fbfce38c65"
+                  }, {
+                    "title" : "Alicante",
+                    "value" : "768a73be-2ad6-467d-b369-3db14eb5e0b9"
+                  }, {
+                    "title" : "Apulien",
+                    "value" : "f1cd9437-d240-4e9a-8eac-ff6e4f06acbf"
+                  }, {
+                    "title" : "Baden (D)",
+                    "value" : "3adb4fbe-f025-4b93-bbf2-c77a6d0db2d5"
+                  }, {
+                    "title" : "Beaujolais",
+                    "value" : "58f86296-1c57-4f6c-bbec-af141461d161"
+                  }, {
+                    "title" : "Beiras",
+                    "value" : "d22cfb45-09e2-4d36-b75a-fb7172418b7f"
+                  }, {
+                    "title" : "Bordeaux",
+                    "value" : "35a159be-6495-4240-aebc-e7eacacd8683"
+                  }, {
+                    "title" : "Bündner Herrschaft",
+                    "value" : "0e6ac2c7-6114-4ebb-bed3-8f8930092b58"
+                  }, {
+                    "title" : "Burgund",
+                    "value" : "7755be1f-85c9-4820-ae03-a2e636a07744"
+                  } ]
+                }, {
+                  "id" : "price",
+                  "title" : "Preisklasse",
+                  "type" : "slider",
+                  "range" : {
+                    "min" : {
+                      "value" : 1,
+                      "filter" : {
+                        "property" : "price_from",
+                        "operator" : ">=",
+                        "type" : "integer"
+                      }
+                    },
+                    "max" : {
+                      "value" : 75,
+                      "filter" : {
+                        "property" : "price_to",
+                        "operator" : "<=",
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }, {
+                  "id" : "fits_withs",
+                  "title" : "Passend zu",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "fits_withs",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Apéro (Antipasti, Tapas)",
+                    "value" : "caadd673-57cd-44b9-9880-51439bf5bcea"
+                  }, {
+                    "title" : "Charcuterie",
+                    "value" : "b72c72d7-f080-4328-a30c-578a09bedd6c"
+                  }, {
+                    "title" : "Dessert",
+                    "value" : "4797e12c-75ef-4066-9fee-9c0f3ec3323a"
+                  }, {
+                    "title" : "Eintopf",
+                    "value" : "135c8549-9900-48af-87e5-2f4438b95490"
+                  }, {
+                    "title" : "Exotische Küche",
+                    "value" : "96b1cd50-8ebc-4dd0-8f27-b9ca8c5a5a90"
+                  }, {
+                    "title" : "Fisch: grilliert",
+                    "value" : "99469c64-0e5a-4019-99f8-058f9b1217b7"
+                  }, {
+                    "title" : "Fisch: Süsswasser",
+                    "value" : "08e22d51-a408-4b04-95dc-3324c3b76c5f"
+                  }, {
+                    "title" : "Fleisch: hell",
+                    "value" : "db23e29e-3977-442a-97d0-848f9eda328c"
+                  }, {
+                    "title" : "Fleisch: rot",
+                    "value" : "c25d5227-c168-49d6-8a3e-643bc15bd768"
+                  } ]
+                }, {
+                  "id" : "awards",
+                  "title" : "Auszeichnungen",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "awards",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Berliner Wein Trophy",
+                    "value" : "19d51187-b3a9-425e-8078-053a21d267b0"
+                  }, {
+                    "title" : "Decanter",
+                    "value" : "26c92089-3987-468f-873d-99a40b23c7b1"
+                  }, {
+                    "title" : "Expovina",
+                    "value" : "4c2ce3c7-d182-4c38-be9a-f6ec22166bea"
+                  }, {
+                    "title" : "Gold Concours Mondial de Bruxelles",
+                    "value" : "e34d5974-801f-4db2-b84d-048eb0282a6e"
+                  }, {
+                    "title" : "Guía Peñin",
+                    "value" : "656d7d8a-818d-4399-ac3e-6a555327ae77"
+                  }, {
+                    "title" : "Mundus Vini",
+                    "value" : "875f0381-9b40-46dd-b51e-d083ab0b07a0"
+                  }, {
+                    "title" : "Parker",
+                    "value" : "71114e89-d805-4ac7-a959-f01b4a84ccbd"
+                  }, {
+                    "title" : "Silber Concours Mondial de Bruxelles",
+                    "value" : "1f2b1f0a-3b96-45ae-a896-4efce5bc4037"
+                  }, {
+                    "title" : "Weinseller",
+                    "value" : "41914842-776c-4116-bc95-876c1d8d4f4f"
+                  }, {
+                    "title" : "Wine Challenge London",
+                    "value" : "2862756c-ab6d-419e-9297-365d7e83543c"
+                  }, {
+                    "title" : "Wine Spectator",
+                    "value" : "09320b37-2174-4db0-bbc9-536f8bd71618"
+                  }, {
+                    "title" : "Wine&Spirit",
+                    "value" : "669ed4a8-88dd-457f-a3b2-de9ef31400f3"
+                  } ]
+                }, {
+                  "id" : "promotion_type",
+                  "title" : "Aktionen",
+                  "type" : "list",
+                  "filter" : {
+                    "property" : "promotion_type",
+                    "operator" : "in",
+                    "type" : "array"
+                  },
+                  "options" : [ {
+                    "title" : "Alle Aktionen",
+                    "value" : 0
+                  }, {
+                    "title" : "Rotwein-Aktionen",
+                    "value" : 2
+                  }, {
+                    "title" : "Weisswein-Aktionen",
+                    "value" : 1
+                  }, {
+                    "title" : "Schaumwein-Aktionen",
+                    "value" : 4
+                  }, {
+                    "title" : "Rosé-Aktionen",
+                    "value" : 3
+                  }, {
+                    "title" : "Andere Aktionen",
+                    "value" : 5
+                  } ]
+                } ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wines" : {
+      "get" : {
+        "tags" : [ "Wine – Weindaten" ],
+        "summary" : "List the online groups appearing in given online filter",
+        "description" : "Use this operation to get a list of all online groups (Internet-Sortimente) for a specific online filter.\n",
+        "operationId" : "listWines",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "de"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- __property__:\n  Property to filter on.\n- __operator__:\n  Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- __type__:\n  Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- __value__:\n  Value. Must be of the defined type.\n\n\nExample:\n[{\"property\":\"id\",\"operator\":\"eq\",\"type\":\"string\",\"value\":\"bcb8a388-8998-4d08-85a6-4864199704ee\"}]\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "query",
+          "in" : "query",
+          "description" : "Search text",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0.0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: -1 (no limit)\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : -1,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/WinesResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "total_items" : 250,
+                "wines" : [ {
+                  "id" : "051273",
+                  "title" : "Mandorla Primitivo di Puglia IGT",
+                  "description" : "2013, Apulien, Italien, 6 x 75 cl",
+                  "content" : {
+                    "text" : "75 cl"
+                  },
+                  "base" : {
+                    "text" : "10 cl"
+                  },
+                  "wine" : {
+                    "country" : {
+                      "id" : "IT",
+                      "title" : "Italien"
+                    },
+                    "region" : {
+                      "id" : "b19c42bf-ed78-46ff-ad6f-fc688a059e6a",
+                      "title" : "Apulien"
+                    },
+                    "type" : {
+                      "id" : 2,
+                      "title" : "Rotwein"
+                    },
+                    "year" : 2013,
+                    "fits_with" : "Pasta, Fleisch mit würzigen Saucen",
+                    "varietal" : "Primitivo",
+                    "character" : "Dunkles Rubinrot. In der Nase Aromen von roten Beeren, reifen Kirschen und Brombeeren. Geschmeidig im Gaumen.",
+                    "temperature" : "16-18 °C",
+                    "awards" : "",
+                    "storage" : "3 Jahre",
+                    "rating" : {
+                      "value" : 4.45,
+                      "total" : 11,
+                      "valid" : true
+                    },
+                    "shop" : {
+                      "url" : "http://denner-wineshop.ch/skuredirect/051273/de/",
+                      "quantity" : 6,
+                      "prices" : {
+                        "sales" : 68.4,
+                        "base" : 1.52,
+                        "by_quantity" : [ {
+                          "quantity" : 1,
+                          "sales" : 11.4
+                        }, {
+                          "quantity" : 6,
+                          "sales" : 68.4
+                        } ]
+                      },
+                      "stock" : {
+                        "value" : -15,
+                        "code" : 2,
+                        "message" : "Derzeit nicht bestellbar"
+                      }
+                    }
+                  }
+                } ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wines/{article_id}/appraisals" : {
+      "get" : {
+        "tags" : [ "Wine – Weindaten" ],
+        "summary" : "List the appraisals of given wine",
+        "description" : "Use this operation to get a list of all appraisals (Bewertungen) for a specific wine.\n",
+        "operationId" : "listAppraisalsByWine",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0.0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: -1 (no limit)\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : -1,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/AppraisalsResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "total_items" : 15,
+                "appraisals" : [ {
+                  "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                  "created_on" : "2015-10-30T10:16:41+0200",
+                  "wine_year" : "2013",
+                  "title" : "un très très bon vin",
+                  "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                  "rating" : 5,
+                  "firstname" : "Isabelle",
+                  "lastname" : "Rossetti",
+                  "address" : "3 rue du Temple",
+                  "zip_code" : "1304",
+                  "city" : "Cossonay",
+                  "language" : "fr"
+                }, {
+                  "id" : "a8c82c69-e975-4d3b-b0ba-aae6ed961cd7",
+                  "created_on" : "2015-10-20T14:37:56+0200",
+                  "wine_year" : null,
+                  "title" : "Ein Primitivo passt immer.",
+                  "description" : null,
+                  "rating" : 4,
+                  "firstname" : "Pitsch",
+                  "lastname" : "Frei",
+                  "address" : "Au 7",
+                  "zip_code" : "5420",
+                  "city" : "Ehrendingen",
+                  "language" : "de"
+                } ]
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Wine – Weindaten" ],
+        "summary" : "Create a new appraisals for the given wine",
+        "description" : "Use this operation to create a new appraisal (Bewertung) for a specific wine.\n",
+        "operationId" : "createAppraisal",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "in" : "body",
+          "name" : "appraisal",
+          "description" : "Data for the appraisal\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Appraisal"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "schema" : {
+              "$ref" : "#/definitions/Appraisal"
+            },
+            "examples" : {
+              "application/json" : {
+                "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                "created_on" : "2015-10-30T10:16:41+0200",
+                "wine_year" : "2013",
+                "title" : "un très très bon vin",
+                "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                "rating" : 5,
+                "firstname" : "Isabelle",
+                "lastname" : "Rossetti",
+                "address" : "3 rue du Temple",
+                "zip_code" : "1304",
+                "city" : "Cossonay",
+                "language" : "fr"
+              }
             }
           }
         }
@@ -245,28 +1079,6 @@
       "type" : "string",
       "description" : "Unique identifier"
     },
-    "Locale" : {
-      "type" : "string",
-      "description" : "Locale"
-    },
-    "Translations" : {
-      "type" : "array",
-      "items" : {
-        "$ref" : "#/definitions/Translation"
-      }
-    },
-    "Translation" : {
-      "type" : "object",
-      "properties" : {
-        "locale" : {
-          "$ref" : "#/definitions/Locale"
-        },
-        "value" : {
-          "type" : "string",
-          "description" : "Translated text value"
-        }
-      }
-    },
     "Country" : {
       "type" : "object",
       "properties" : {
@@ -276,7 +1088,8 @@
           "pattern" : "/^[A-Z]{2}$/"
         },
         "title" : {
-          "$ref" : "#/definitions/Translations"
+          "type" : "string",
+          "description" : "Title as displayed to users (localized)"
         }
       },
       "description" : "Country"
@@ -295,32 +1108,179 @@
       "format" : "int32",
       "description" : "Day of week; 0 = Sunday"
     },
-    "Appearance" : {
+    "Year" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "Year"
+    },
+    "Price" : {
+      "type" : "number",
+      "format" : "float",
+      "description" : "Price in CHF"
+    },
+    "Quantity" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "Quantity"
+    },
+    "Cooling" : {
+      "type" : "number",
+      "format" : "int32",
+      "description" : "Cooling type (0 = no cooling, 1 = refrigerated, 2 = frozen)"
+    },
+    "Validity" : {
       "type" : "object",
       "properties" : {
         "from" : {
-          "type" : "string",
-          "format" : "date"
+          "$ref" : "#/definitions/Date"
         },
         "to" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "text" : {
           "type" : "string",
-          "format" : "date"
+          "description" : "Validity text as displayed to users (localized)"
+        }
+      },
+      "description" : "Generic validity based on dates (from/to) and a corresponding text"
+    },
+    "ArticleValidity" : {
+      "type" : "object",
+      "properties" : {
+        "from" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "to" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "short_text" : {
+          "type" : "string",
+          "description" : "Validity text (short version) as displayed to users (localized)"
+        },
+        "long_text" : {
+          "type" : "string",
+          "description" : "Validity text (long version) as displayed to users (localized)"
+        }
+      },
+      "description" : "Article validity based on dates (from/to) and corresponding texts (short and long version)"
+    },
+    "Url" : {
+      "type" : "string",
+      "description" : "Web URL address"
+    },
+    "Phone" : {
+      "type" : "string",
+      "description" : "Formatted phone number"
+    },
+    "Filter" : {
+      "type" : "object",
+      "properties" : {
+        "property" : {
+          "type" : "string",
+          "description" : "Name of the property to filter against"
+        },
+        "operator" : {
+          "type" : "string",
+          "description" : "Operator to compare the value (e.g. \"=\")"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Data type of the value (e.g. \"integer\")"
+        }
+      },
+      "description" : "Filter definition"
+    },
+    "SliderLimit" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "integer",
+          "description" : "Limit (value for the filter)"
+        },
+        "filter" : {
+          "$ref" : "#/definitions/Filter"
         }
       }
     },
-    "OnlineFilter" : {
+    "FilterSection" : {
       "type" : "object",
+      "required" : [ "id", "title", "type" ],
+      "discriminator" : "type",
       "properties" : {
         "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "name" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Unique identifier"
         },
         "title" : {
-          "$ref" : "#/definitions/Translations"
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Filter type (e.g. \"list\")"
         }
       }
+    },
+    "ListFilterSection" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/FilterSection"
+      }, {
+        "properties" : {
+          "filter" : {
+            "type" : "object",
+            "properties" : {
+              "property" : {
+                "type" : "string",
+                "description" : "Name of the property to filter against"
+              },
+              "type" : {
+                "type" : "string",
+                "description" : "Data type of the value (e.g. \"integer\")"
+              },
+              "operator" : {
+                "type" : "string",
+                "description" : "Operator to compare the value (e.g. \"=\")"
+              }
+            }
+          },
+          "options" : {
+            "type" : "array",
+            "description" : "Options",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "title" : {
+                  "type" : "string",
+                  "description" : "Public title of the option as displayed to users (localized)"
+                },
+                "value" : {
+                  "type" : "string",
+                  "description" : "Value to filter against"
+                }
+              }
+            }
+          }
+        }
+      } ]
+    },
+    "SliderFilterSection" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/FilterSection"
+      }, {
+        "properties" : {
+          "range" : {
+            "type" : "object",
+            "properties" : {
+              "min" : {
+                "$ref" : "#/definitions/SliderLimit"
+              },
+              "max" : {
+                "$ref" : "#/definitions/SliderLimit"
+              }
+            }
+          }
+        }
+      } ]
     },
     "Store" : {
       "type" : "object",
@@ -352,24 +1312,24 @@
           "minimum" : 1000.0,
           "maximum" : 9699.0
         },
-        "city" : {
-          "type" : "string",
-          "description" : "City"
-        },
         "canton_code" : {
           "type" : "string",
           "description" : "Canton (state) code"
         },
-        "country" : {
-          "$ref" : "#/definitions/Country"
+        "city" : {
+          "type" : "string",
+          "description" : "City"
+        },
+        "country_code" : {
+          "type" : "string",
+          "description" : "Country code definition from ISO 3166",
+          "pattern" : "/^[A-Z]{2}$/"
         },
         "phone" : {
-          "type" : "string",
-          "description" : "Phone number"
+          "$ref" : "#/definitions/Phone"
         },
         "hotline" : {
-          "type" : "string",
-          "description" : "Hotline number"
+          "$ref" : "#/definitions/Phone"
         },
         "payment_types" : {
           "type" : "array",
@@ -382,35 +1342,35 @@
           "type" : "boolean",
           "description" : "Credit card can be used for payments?"
         },
-        "opened_on" : {
+        "open_from" : {
           "type" : "string",
           "format" : "date",
-          "description" : "Opened on"
+          "description" : "Opening on"
         },
-        "closed_on" : {
+        "open_to" : {
           "type" : "string",
           "format" : "date",
-          "description" : "Closed on"
+          "description" : "Closing on"
         },
         "renovation_from" : {
           "type" : "string",
           "format" : "date",
-          "description" : "Renovation from"
+          "description" : "Renovation starting on"
         },
         "renovation_to" : {
           "type" : "string",
           "format" : "date",
-          "description" : "Renovation to"
-        },
-        "longitude" : {
-          "type" : "number",
-          "format" : "float",
-          "description" : "Geographic longitude"
+          "description" : "Renovation ending on"
         },
         "latitude" : {
           "type" : "number",
           "format" : "float",
           "description" : "Geographic latitude"
+        },
+        "longitude" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Geographic longitude"
         },
         "language" : {
           "type" : "string",
@@ -418,11 +1378,10 @@
         },
         "email" : {
           "type" : "string",
-          "description" : "E-mail address"
+          "description" : "Email address"
         },
         "homepage" : {
-          "type" : "string",
-          "description" : "Website"
+          "$ref" : "#/definitions/Url"
         },
         "parking_count" : {
           "type" : "integer",
@@ -447,13 +1406,6 @@
             "$ref" : "#/definitions/SpecialOpeningTime"
           }
         },
-        "calendar_opening_times" : {
-          "type" : "array",
-          "description" : "Calendar opening times",
-          "items" : {
-            "$ref" : "#/definitions/CalendarOpeningTime"
-          }
-        },
         "services" : {
           "type" : "array",
           "description" : "Services provided by the store",
@@ -467,33 +1419,16 @@
       "type" : "string",
       "description" : "Payment type"
     },
-    "StoreService" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "$ref" : "#/definitions/UUIDv4"
-        },
-        "title" : {
-          "$ref" : "#/definitions/Translations"
-        },
-        "appearances" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/Appearance"
-          }
-        }
-      }
-    },
     "OpeningTime" : {
       "type" : "object",
       "properties" : {
         "weekday" : {
           "$ref" : "#/definitions/DayOfWeek"
         },
-        "opens_at" : {
+        "open_from" : {
           "$ref" : "#/definitions/Time"
         },
-        "closes_at" : {
+        "open_to" : {
           "$ref" : "#/definitions/Time"
         }
       }
@@ -504,32 +1439,19 @@
         "day" : {
           "$ref" : "#/definitions/Date"
         },
-        "opens_at" : {
+        "open_from" : {
           "$ref" : "#/definitions/Time"
         },
-        "closes_at" : {
+        "open_to" : {
           "$ref" : "#/definitions/Time"
         },
         "reason" : {
-          "$ref" : "#/definitions/Translations"
+          "type" : "string",
+          "description" : "Reason for the special opening as displayed to users (localized)"
         },
         "closed" : {
           "type" : "boolean",
           "description" : "Is the store closed on this day?"
-        }
-      }
-    },
-    "CalendarOpeningTime" : {
-      "type" : "object",
-      "properties" : {
-        "day" : {
-          "$ref" : "#/definitions/Date"
-        },
-        "opens_at" : {
-          "$ref" : "#/definitions/Time"
-        },
-        "closes_at" : {
-          "$ref" : "#/definitions/Time"
         }
       }
     },
@@ -539,143 +1461,507 @@
         "id" : {
           "$ref" : "#/definitions/UUIDv4"
         },
-        "code" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Navision channel code"
-        },
         "title" : {
-          "$ref" : "#/definitions/Translations"
+          "type" : "string",
+          "description" : "Channel title"
         }
       }
     },
-    "Service" : {
+    "StoreService" : {
       "type" : "object",
       "properties" : {
         "id" : {
           "$ref" : "#/definitions/UUIDv4"
         },
         "title" : {
-          "$ref" : "#/definitions/Translations"
+          "type" : "string",
+          "description" : "Service title"
         }
       }
     },
-    "AdvertisedArticle" : {
+    "EcoLabel" : {
       "type" : "object",
       "properties" : {
         "id" : {
-          "type" : "string",
-          "description" : "Unique identifier",
-          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+          "$ref" : "#/definitions/UUIDv4"
         },
         "code" : {
           "type" : "string",
-          "description" : "Navision article code",
-          "pattern" : "/^\\d{6}$/"
+          "description" : "Navision identification code"
+        }
+      }
+    },
+    "ArticlePrices" : {
+      "type" : "object",
+      "properties" : {
+        "sales" : {
+          "$ref" : "#/definitions/Price"
         },
-        "name" : {
-          "type" : "string",
-          "description" : "Article name"
+        "instead" : {
+          "$ref" : "#/definitions/Price"
         },
-        "texts" : {
-          "$ref" : "#/definitions/ArticleTexts"
+        "base" : {
+          "$ref" : "#/definitions/Price"
         },
-        "prices" : {
-          "$ref" : "#/definitions/Prices"
-        },
-        "prices_by_quantity" : {
+        "by_quantity" : {
           "$ref" : "#/definitions/QuantityPrices"
         }
       }
     },
-    "ArticleTexts" : {
-      "type" : "object",
-      "properties" : {
-        "de" : {
-          "$ref" : "#/definitions/ArticleText"
-        },
-        "fr" : {
-          "$ref" : "#/definitions/ArticleText"
-        },
-        "it" : {
-          "$ref" : "#/definitions/ArticleText"
-        }
-      }
-    },
-    "ArticleText" : {
-      "type" : "object",
-      "properties" : {
-        "title" : {
-          "type" : "string",
-          "description" : "Localized article title"
-        },
-        "description" : {
-          "type" : "string",
-          "description" : "Localized article description"
-        },
-        "saving" : {
-          "type" : "string",
-          "description" : "Localized article saving text"
-        },
-        "base" : {
-          "type" : "string",
-          "description" : "Localized article base content text"
-        },
-        "info" : {
-          "type" : "string",
-          "description" : "Localized article info text"
-        },
-        "validity" : {
-          "type" : "string",
-          "description" : "Localized article validity text"
-        }
-      }
-    },
-    "Prices" : {
-      "type" : "object",
-      "properties" : {
-        "sales" : {
-          "type" : "number",
-          "format" : "float",
-          "description" : "Sales price",
-          "minimum" : 0.0
-        },
-        "instead" : {
-          "type" : "number",
-          "format" : "float",
-          "description" : "Instead price",
-          "minimum" : 0.0
-        },
-        "base" : {
-          "type" : "number",
-          "format" : "float",
-          "description" : "Price for base amount",
-          "minimum" : 0.0
-        }
-      }
-    },
     "QuantityPrices" : {
-      "type" : "object",
-      "properties" : {
-        "{amount}" : {
-          "$ref" : "#/definitions/QuantityPrice"
-        }
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/QuantityPrice"
       }
     },
     "QuantityPrice" : {
       "type" : "object",
       "properties" : {
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
         "sales" : {
-          "type" : "number",
-          "format" : "float",
-          "description" : "Sales price",
-          "minimum" : 0.0
+          "$ref" : "#/definitions/Price"
         },
         "instead" : {
+          "$ref" : "#/definitions/Price"
+        }
+      }
+    },
+    "Content" : {
+      "type" : "object",
+      "properties" : {
+        "text" : {
+          "type" : "string",
+          "description" : "Article content as displayed to users (localized, e.g. \"75 cl\")"
+        }
+      }
+    },
+    "BaseContent" : {
+      "type" : "object",
+      "properties" : {
+        "text" : {
+          "type" : "string",
+          "description" : "Article base content as displayed to users (localized, e.g. \"10 cl\")"
+        }
+      }
+    },
+    "Packshot" : {
+      "type" : "object",
+      "properties" : {
+        "image_url" : {
+          "$ref" : "#/definitions/Url"
+        }
+      }
+    },
+    "ArticleWine" : {
+      "type" : "object",
+      "properties" : {
+        "country" : {
+          "$ref" : "#/definitions/Country"
+        },
+        "region" : {
+          "$ref" : "#/definitions/Region"
+        },
+        "type" : {
+          "$ref" : "#/definitions/WineType"
+        },
+        "year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "fits_with" : {
+          "type" : "string"
+        },
+        "varietal" : {
+          "type" : "string"
+        },
+        "character" : {
+          "type" : "string"
+        },
+        "temperature" : {
+          "type" : "string"
+        },
+        "awards" : {
+          "type" : "string"
+        },
+        "storage" : {
+          "type" : "string"
+        },
+        "rating" : {
+          "$ref" : "#/definitions/Rating"
+        },
+        "shop" : {
+          "$ref" : "#/definitions/ShopInfo"
+        }
+      }
+    },
+    "Region" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title as displayed to users (localized)"
+        }
+      }
+    },
+    "WineType" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision wine type code",
+          "minimum" : 0.0
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title as displayed to users (localized)"
+        }
+      }
+    },
+    "Rating" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
           "type" : "number",
           "format" : "float",
-          "description" : "Instead price",
+          "description" : "Rating value",
+          "minimum" : 0.0,
+          "maximum" : 5.0
+        },
+        "total" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Ratng count",
           "minimum" : 0.0
+        },
+        "valid" : {
+          "type" : "boolean",
+          "description" : "Is a valid rating?"
+        }
+      }
+    },
+    "Stock" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision stock count, might be negative"
+        },
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision stock code",
+          "minimum" : 0.0
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Stock information as displayed to users (localized)"
+        }
+      }
+    },
+    "ShopInfo" : {
+      "type" : "object",
+      "properties" : {
+        "url" : {
+          "$ref" : "#/definitions/Url"
+        },
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "prices" : {
+          "$ref" : "#/definitions/ArticlePrices"
+        },
+        "stock" : {
+          "$ref" : "#/definitions/Stock"
+        }
+      }
+    },
+    "Dots" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Output"
+      }
+    },
+    "Output" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "type" : {
+          "$ref" : "#/definitions/Output_type"
+        },
+        "images" : {
+          "$ref" : "#/definitions/OutputImageFormats"
+        }
+      }
+    },
+    "OutputImageFormats" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/OutputImageFormat"
+      }
+    },
+    "OutputImageFormat" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Mime type for the output image"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "Image URL which can be used, for example, in an 'img' tag"
+        }
+      }
+    },
+    "OnlinePublicationArticle" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "article_id" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Public description as displayed to users (localized)"
+        },
+        "prices" : {
+          "$ref" : "#/definitions/ArticlePrices"
+        },
+        "price_info" : {
+          "type" : "string",
+          "description" : "Price information as displayed to users (localized, e.g. \"Konkurrenzvergleich\")\n"
+        },
+        "unit_price_info" : {
+          "type" : "string",
+          "description" : "Unit price information as displayed to users (localized, e.g. \"Einzelflasche: 9.90 statt 11.40\")\n"
+        },
+        "dots" : {
+          "$ref" : "#/definitions/Dots"
+        },
+        "panel" : {
+          "type" : "string",
+          "description" : "Panel text as displayed to users (localized)"
+        },
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "content" : {
+          "$ref" : "#/definitions/Content"
+        },
+        "base" : {
+          "$ref" : "#/definitions/BaseContent"
+        },
+        "validity" : {
+          "$ref" : "#/definitions/ArticleValidity"
+        },
+        "availability_limitations" : {
+          "$ref" : "#/definitions/OnlinePublicationArticle_availability_limitations"
+        },
+        "promoted" : {
+          "type" : "boolean",
+          "description" : "Is it a promoted article (should be displayed with full information)?"
+        },
+        "compared" : {
+          "type" : "boolean",
+          "description" : "Is the article's price compared to an offer from an other company?"
+        },
+        "cooling" : {
+          "$ref" : "#/definitions/Cooling"
+        },
+        "eco_labels" : {
+          "$ref" : "#/definitions/EcoLabels"
+        },
+        "packshot" : {
+          "$ref" : "#/definitions/Packshot"
+        },
+        "wine" : {
+          "$ref" : "#/definitions/ArticleWine"
+        }
+      }
+    },
+    "OnlinePublication" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        },
+        "validity" : {
+          "$ref" : "#/definitions/Validity"
+        },
+        "articles" : {
+          "$ref" : "#/definitions/OnlinePublicationArticles"
+        }
+      }
+    },
+    "OnlineFilter" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        }
+      }
+    },
+    "OnlineGroup" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        },
+        "children" : {
+          "$ref" : "#/definitions/OnlineGroups"
+        }
+      }
+    },
+    "Wine" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Public title as displayed to users (localized)"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Public description as displayed to users (localized)"
+        },
+        "content" : {
+          "$ref" : "#/definitions/Content"
+        },
+        "base" : {
+          "$ref" : "#/definitions/BaseContent"
+        },
+        "wine" : {
+          "$ref" : "#/definitions/ArticleWine"
+        }
+      }
+    },
+    "Appraisal" : {
+      "type" : "object",
+      "required" : [ "rating", "title" ],
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Given rating",
+          "minimum" : 1.0,
+          "maximum" : 5.0
+        },
+        "firstname" : {
+          "type" : "string",
+          "description" : "Person's first name"
+        },
+        "lastname" : {
+          "type" : "string",
+          "description" : "Person's last name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Person's address"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Person's ZIP code",
+          "minimum" : 1000.0,
+          "maximum" : 9699.0
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      }
+    },
+    "Banner" : {
+      "type" : "object",
+      "required" : [ "title", "types" ],
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "types" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "closable" : {
+          "type" : "boolean",
+          "description" : "Can the user close the banner?"
+        },
+        "position" : {
+          "type" : "string",
+          "description" : "Where the banner is shown in the UI"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title as shown to the user (localized)"
+        },
+        "html" : {
+          "type" : "string",
+          "description" : "Text as shown to the user (localized)"
+        },
+        "link" : {
+          "$ref" : "#/definitions/Url"
+        },
+        "image" : {
+          "$ref" : "#/definitions/Banner_image"
+        },
+        "campaign" : {
+          "$ref" : "#/definitions/Banner_campaign"
         }
       }
     },
@@ -685,31 +1971,69 @@
         "$ref" : "#/definitions/Store"
       }
     },
+    "StoreFilters" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/ListFilterSection"
+      }
+    },
+    "EcoLabels" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/EcoLabel"
+      }
+    },
+    "OnlinePublicationArticles" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/OnlinePublicationArticle"
+      }
+    },
+    "OnlinePublications" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/OnlinePublication"
+      }
+    },
     "OnlineFilters" : {
       "type" : "array",
       "items" : {
         "$ref" : "#/definitions/OnlineFilter"
       }
     },
-    "AdvertisedArticles" : {
+    "OnlineGroups" : {
       "type" : "array",
       "items" : {
-        "$ref" : "#/definitions/AdvertisedArticle"
+        "$ref" : "#/definitions/OnlineGroup"
+      }
+    },
+    "Wines" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Wine"
+      }
+    },
+    "WineFilters" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/FilterSection"
+      }
+    },
+    "Appraisals" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Appraisal"
+      }
+    },
+    "Banners" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Banner"
       }
     },
     "StoresResponse" : {
       "type" : "object",
       "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
         "total_items" : {
           "type" : "integer",
           "format" : "int32",
@@ -720,58 +2044,122 @@
         }
       }
     },
+    "StoreFiltersResponse" : {
+      "type" : "object",
+      "properties" : {
+        "store_filters" : {
+          "$ref" : "#/definitions/StoreFilters"
+        }
+      }
+    },
     "OnlineFiltersResponse" : {
       "type" : "object",
       "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
-        "total_items" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of items on all pages"
-        },
         "online_filters" : {
           "$ref" : "#/definitions/OnlineFilters"
         }
       }
     },
-    "OnlinePublicationArticlesResponse" : {
+    "OnlineGroupsResponse" : {
       "type" : "object",
       "properties" : {
-        "page_count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The number of pages"
-        },
-        "page_size" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "The page size"
-        },
+        "online_groups" : {
+          "$ref" : "#/definitions/OnlineGroups"
+        }
+      }
+    },
+    "OnlinePublicationsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "online_publications" : {
+          "$ref" : "#/definitions/OnlinePublications"
+        }
+      }
+    },
+    "WinesResponse" : {
+      "type" : "object",
+      "properties" : {
         "total_items" : {
           "type" : "integer",
           "format" : "int32",
           "description" : "The number of items on all pages"
         },
-        "articles" : {
-          "$ref" : "#/definitions/AdvertisedArticles"
+        "stores" : {
+          "$ref" : "#/definitions/Wines"
         }
       }
     },
-    "DummyResponse" : {
+    "WineFiltersResponse" : {
       "type" : "object",
       "properties" : {
-        "foo" : {
+        "wine_filters" : {
+          "$ref" : "#/definitions/WineFilters"
+        }
+      }
+    },
+    "AppraisalsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "appraisals" : {
+          "$ref" : "#/definitions/Appraisals"
+        }
+      }
+    },
+    "BannersResponse" : {
+      "type" : "object",
+      "properties" : {
+        "appraisals" : {
+          "$ref" : "#/definitions/Banners"
+        }
+      }
+    },
+    "Output_type" : {
+      "properties" : {
+        "id" : {
           "type" : "string",
-          "description" : "bar"
+          "description" : "Output type id"
+        }
+      },
+      "description" : "Output type"
+    },
+    "OnlinePublicationArticle_availability_limitations" : {
+      "properties" : {
+        "region" : {
+          "type" : "string",
+          "description" : "Region availability as displayed to users (localized)"
+        },
+        "store" : {
+          "type" : "string",
+          "description" : "Store availability as displayed to users (localized)"
+        }
+      },
+      "description" : "Texts for information about limited availability"
+    },
+    "Banner_image" : {
+      "properties" : {
+        "image_url" : {
+          "$ref" : "#/definitions/Url"
+        }
+      }
+    },
+    "Banner_campaign" : {
+      "properties" : {
+        "source" : {
+          "type" : "string",
+          "description" : "Campaign source (UTM)"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Campaign name (UTM)"
+        },
+        "medium" : {
+          "type" : "string",
+          "description" : "Campaign medium (UTM)"
         }
       }
     }
@@ -780,26 +2168,82 @@
     "PageParam" : {
       "name" : "page",
       "in" : "query",
-      "description" : "The page number",
+      "description" : "The page number. Default: 1\n",
       "required" : false,
       "type" : "integer",
+      "default" : 1,
+      "minimum" : 0.0,
       "format" : "int32"
     },
     "PageSizeParam" : {
       "name" : "page_size",
       "in" : "query",
-      "description" : "The page size",
+      "description" : "The page size. Default: -1 (no limit)\n",
       "required" : false,
       "type" : "integer",
+      "default" : -1,
       "format" : "int32"
     },
-    "PublicationIdPathParam" : {
-      "name" : "publication_id",
+    "OnlineFilterIdPathParam" : {
+      "name" : "filter_id",
       "in" : "path",
-      "description" : "The unique identifier of an online publication",
+      "description" : "The unique identifier of an online filter",
       "required" : true,
       "type" : "string",
       "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+    },
+    "ArticleIdPathParam" : {
+      "name" : "article_id",
+      "in" : "path",
+      "description" : "The unique identifier of an article",
+      "required" : true,
+      "type" : "string",
+      "pattern" : "/^\\d{6}$/"
+    },
+    "FilterParam" : {
+      "name" : "filter",
+      "in" : "query",
+      "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- __property__:\n  Property to filter on.\n- __operator__:\n  Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- __type__:\n  Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- __value__:\n  Value. Must be of the defined type.\n\n\nExample:\n[{\"property\":\"id\",\"operator\":\"eq\",\"type\":\"string\",\"value\":\"bcb8a388-8998-4d08-85a6-4864199704ee\"}]\n",
+      "required" : false,
+      "type" : "string"
+    },
+    "QueryParam" : {
+      "name" : "query",
+      "in" : "query",
+      "description" : "Search text",
+      "required" : false,
+      "type" : "string"
+    },
+    "AcceptHeader" : {
+      "name" : "Accept",
+      "in" : "header",
+      "description" : "Accepted content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    },
+    "AcceptLanguageHeader" : {
+      "name" : "Accept-Language",
+      "in" : "header",
+      "description" : "Accepted locale (supported are \"de\", \"fr\", and \"it\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "de"
+    },
+    "ContentTypeHeader" : {
+      "name" : "Content-Type",
+      "in" : "header",
+      "description" : "Request body content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    },
+    "UserAgentHeader" : {
+      "name" : "User-Agent",
+      "in" : "header",
+      "description" : "User agent\n",
+      "required" : false,
+      "type" : "string"
     }
   }
 }
