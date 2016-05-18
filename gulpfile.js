@@ -132,7 +132,7 @@ gulp.task('copy', ['less'], function() {
 gulp.task('deploy', function() {
   return gulp.src('./dist/**/*')
     .pipe(ghPages({
-      remoteUrl: 'git@github.com:detailnet/denner-mobile-api-docs.git',
+      remoteUrl: 'git@github.com:detailnet/denner-shop-api-docs.git',
       origin: 'origin',
       branch: 'gh-pages',
       message: 'Deployed latest distribution'
