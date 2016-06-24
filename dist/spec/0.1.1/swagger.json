@@ -1,0 +1,475 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "RESTful API for the Denner Wineshop",
+    "version" : "1.0.0",
+    "title" : "Denner Shop Web Service",
+    "contact" : {
+      "name" : "DETAIL NET",
+      "email" : "support+denner-shop-api@detailnet.ch"
+    }
+  },
+  "host" : "denner-shop-api-v1.detailnet.ch",
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/sweepstake-participants" : {
+      "post" : {
+        "tags" : [ "other" ],
+        "summary" : "Create a new sweepstake participant",
+        "description" : "Use this operation to create a sweepstake participant (Gewinnspielteilnehmer).\n",
+        "operationId" : "createSweepstakeParticipant",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "in" : "body",
+          "name" : "participant",
+          "description" : "Data for the participant\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/NewSweepstakeParticipant"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "schema" : {
+              "$ref" : "#/definitions/SweepstakeParticipant"
+            },
+            "examples" : {
+              "application/json" : {
+                "id" : "ed20c828-17b4-4a19-b403-ae223e1cfece",
+                "created_on" : "2016-05-09T13:30:29+00:00",
+                "display_name" : "Michelle M.",
+                "city" : "Zurich",
+                "language" : "de"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wines/{article_id}/appraisals" : {
+      "get" : {
+        "tags" : [ "wine" ],
+        "summary" : "List the appraisals of given wine",
+        "description" : "Use this operation to get a list of all appraisals (Bewertungen) for a specific wine.\n",
+        "operationId" : "listAppraisalsByWine",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0.0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "schema" : {
+              "$ref" : "#/definitions/AppraisalsResponse"
+            },
+            "examples" : {
+              "application/json" : {
+                "total_appraisals" : 15,
+                "appraisals" : [ {
+                  "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                  "created_on" : "2015-10-30T10:16:41+02:00",
+                  "wine_year" : 2013,
+                  "title" : "un très très bon vin",
+                  "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                  "rating" : 5,
+                  "display_name" : "Hans M.",
+                  "city" : "Cossonay",
+                  "language" : "fr"
+                }, {
+                  "id" : "a8c82c69-e975-4d3b-b0ba-aae6ed961cd7",
+                  "created_on" : "2015-10-20T14:37:56+02:00",
+                  "wine_year" : null,
+                  "title" : "Ein Primitivo passt immer.",
+                  "description" : null,
+                  "rating" : 4,
+                  "display_name" : "Michelle M.",
+                  "city" : "Zürich",
+                  "language" : "de"
+                } ]
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "wine" ],
+        "summary" : "Create a new appraisal for the given wine",
+        "description" : "Use this operation to create a new appraisal (Bewertung) for a specific wine.\n",
+        "operationId" : "createAppraisal",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "in" : "body",
+          "name" : "appraisal",
+          "description" : "Data for the appraisal\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/NewAppraisal"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "schema" : {
+              "$ref" : "#/definitions/Appraisal"
+            },
+            "examples" : {
+              "application/json" : {
+                "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                "created_on" : "2015-10-30T10:16:41+02:00",
+                "wine_year" : 2013,
+                "title" : "un très très bon vin",
+                "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                "rating" : 5,
+                "display_name" : "Hans M.",
+                "city" : "Cossonay",
+                "language" : "fr"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "UUIDv4" : {
+      "type" : "string",
+      "description" : "Unique identifier"
+    },
+    "Year" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "Year"
+    },
+    "Appraisal" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Given rating",
+          "minimum" : 1.0,
+          "maximum" : 5.0
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "Person's (public) name"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      }
+    },
+    "NewAppraisal" : {
+      "type" : "object",
+      "required" : [ "rating", "title" ],
+      "properties" : {
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Given rating",
+          "minimum" : 1.0,
+          "maximum" : 5.0
+        },
+        "firstname" : {
+          "type" : "string",
+          "description" : "Person's first name"
+        },
+        "lastname" : {
+          "type" : "string",
+          "description" : "Person's last name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Person's address"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Person's ZIP code",
+          "minimum" : 1000.0,
+          "maximum" : 9699.0
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Person's email address"
+        },
+        "gender" : {
+          "type" : "string",
+          "description" : "Person's gender (either \"male\" or \"female\")"
+        },
+        "shop_user_id" : {
+          "type" : "integer",
+          "description" : "Identifier for the person's Wineshop user account"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      },
+      "example" : {
+        "application/json" : {
+          "wine_year" : 2013,
+          "title" : "un très très bon vin",
+          "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+          "rating" : 5,
+          "firstname" : "Isabelle",
+          "lastname" : "Rossetti",
+          "address" : "3 rue du Temple",
+          "zip_code" : "1304",
+          "city" : "Cossonay",
+          "language" : "fr"
+        }
+      }
+    },
+    "SweepstakeParticipant" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "Person's (public) name"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      }
+    },
+    "NewSweepstakeParticipant" : {
+      "type" : "object",
+      "required" : [ "address", "city", "email", "firstname", "gender", "lastname", "zip_code" ],
+      "properties" : {
+        "firstname" : {
+          "type" : "string",
+          "description" : "Person's first name"
+        },
+        "lastname" : {
+          "type" : "string",
+          "description" : "Person's last name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Person's address"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Person's ZIP code",
+          "minimum" : 1000.0,
+          "maximum" : 9699.0
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Person's email address"
+        },
+        "gender" : {
+          "type" : "string",
+          "description" : "Person's gender (either \"male\" or \"female\")"
+        },
+        "shop_user_id" : {
+          "type" : "integer",
+          "description" : "Identifier for the person's Wineshop user account"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      },
+      "example" : {
+        "application/json" : {
+          "firstname" : "Michelle",
+          "lastname" : "Muster",
+          "address" : "Bahnhofstrasse 7",
+          "zip_code" : "8034",
+          "city" : "Zurich",
+          "email" : "email@gmx.ch",
+          "gender" : "female",
+          "shop_user_id" : 123456789,
+          "language" : "de"
+        }
+      }
+    },
+    "Appraisals" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Appraisal"
+      }
+    },
+    "AppraisalsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_appraisals" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "appraisals" : {
+          "$ref" : "#/definitions/Appraisals"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "PageParam" : {
+      "name" : "page",
+      "in" : "query",
+      "description" : "The page number. Default: 1\n",
+      "required" : false,
+      "type" : "integer",
+      "default" : 1,
+      "minimum" : 0.0,
+      "format" : "int32"
+    },
+    "PageSizeParam" : {
+      "name" : "page_size",
+      "in" : "query",
+      "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+      "required" : false,
+      "type" : "integer",
+      "default" : 10,
+      "format" : "int32"
+    },
+    "ArticleIdPathParam" : {
+      "name" : "article_id",
+      "in" : "path",
+      "description" : "The unique identifier of an article",
+      "required" : true,
+      "type" : "string",
+      "pattern" : "/^\\d{6}$/"
+    },
+    "AcceptHeader" : {
+      "name" : "Accept",
+      "in" : "header",
+      "description" : "Accepted content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    },
+    "ContentTypeHeader" : {
+      "name" : "Content-Type",
+      "in" : "header",
+      "description" : "Request body content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    }
+  }
+}
