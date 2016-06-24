@@ -63,7 +63,7 @@
           });
 
 //          addApiKeyAuthorization('app_id', 'App-ID');
-//          addApiKeyAuthorization('app_key', 'App-Key');
+          addApiKeyAuthorization('app_key', 'App-Key');
         },
         onFailure: function(data) {
           log("Unable to Load SwaggerUI");
@@ -73,17 +73,17 @@
         showRequestHeaders: true
       });
 
-//      function addApiKeyAuthorization(key, header){
-//        var value = encodeURIComponent($('#' + key)[0].value);
-//
-//        if (value && value.trim() != '') {
-//            var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization(header, value, 'header');
-//            window.swaggerUi.api.clientAuthorizations.add(key, apiKeyAuth);
-//            log('Added auth header "' + header + ': ' + value + '"');
-//        }
-//      }
-//
-//      $('#input_apiKey').change(addApiKeyAuthorization);
+      function addApiKeyAuthorization(key, header){
+        var value = encodeURIComponent($('#' + key)[0].value);
+
+        if (value && value.trim() != '') {
+            var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization(header, value, 'header');
+            window.swaggerUi.api.clientAuthorizations.add(key, apiKeyAuth);
+            log('Added auth header "' + header + ': ' + value + '"');
+        }
+      }
+
+      $('#input_apiKey').change(addApiKeyAuthorization);
 
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
       /*
@@ -106,12 +106,12 @@
 <div id='header'>
   <div class="swagger-ui-wrap">
     <img id="logo" src="images/denner_logo.svg" alt="Denner">
-    <!--<form id='api_selector'>-->
+    <form id='api_selector'>
       <!--<div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>-->
       <!--<div class='input'><input placeholder="App-ID" id="app_id" name="appId" type="text"/></div>-->
-      <!--<div class='input'><input placeholder="App-Key" id="app_key" name="appKey" type="text"/></div>-->
-      <!--<div class='input'><a id="explore" href="#" data-sw-translate>Reload</a></div>-->
-    <!--</form>-->
+      <div class='input'><input placeholder="App-Key" id="app_key" name="appKey" type="text"/></div>
+      <div class='input'><a id="explore" href="#" data-sw-translate>Reload</a></div>
+    </form>
   </div>
 </div>
 
