@@ -1,0 +1,2652 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "RESTful API for the Denner Wineshop",
+    "version" : "2.0.0",
+    "title" : "Denner Shop Web Service",
+    "contact" : {
+      "name" : "DETAIL NET",
+      "email" : "support+denner-shop-api@detailnet.ch"
+    }
+  },
+  "host" : "denner-shop-api-v2.detailnet.ch",
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/wines" : {
+      "get" : {
+        "tags" : [ "wine" ],
+        "summary" : "List all wines currently targetted for the Wineshop",
+        "description" : "Use this operation to get a list of all wines targetted for the Wineshop.\n",
+        "operationId" : "listWines",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- property: Property to filter on.\n- operator: Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- type: Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- value: Value. Must be of the defined type.\n\nExamples:\n- [{\"property\":\"id\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"7627150d-36bd-4867-89b2-091800a03d24\",\"58afec5c-ece9-4b66-bc55-00d6dc1b65b8\"]}]\n- [{\"property\":\"in_shop\",\"operator\":\"eq\",\"type\":\"boolean\",\"value\":true}]\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort the results, e.g. \"sort=[{\"property\":\"name\",\"direction\":\"desc\"}]\" will sort by name (Z to A)\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "page_count" : 1,
+                "page_size" : 1,
+                "total_items" : 1,
+                "articles" : [ {
+                  "id" : "051273",
+                  "name" : "Mandorla Primitivo IGT Puglia",
+                  "title" : [ {
+                    "locale" : "de",
+                    "value" : "Mandorla Primitivo di Puglia IGT"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "Mandorla Primitivo di Puglia IGT"
+                  }, {
+                    "locale" : "it",
+                    "value" : "Mandorla Primitivo di Puglia IGT"
+                  } ],
+                  "description" : [ {
+                    "locale" : "de",
+                    "value" : "2013, Apulien, Italien, 6 x 75 cl"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "2013, les Pouilles, Italie, 6 x 75 cl"
+                  }, {
+                    "locale" : "it",
+                    "value" : "2013, Puglia, Italia, 6 x 75 cl"
+                  } ],
+                  "article_group" : {
+                    "id" : "0c309757-5432-4652-8201-ec35f31c5260",
+                    "code" : "60-56",
+                    "name" : "Italien Rot 70 cl",
+                    "parent" : {
+                      "id" : "3f3df00f-6a7e-49a9-8eca-a36727ca4977",
+                      "code" : "60",
+                      "name" : "Weine"
+                    }
+                  },
+                  "online_group" : {
+                    "id" : "a2664d3a-93b4-4277-9e6e-c95ad8b6c6ee",
+                    "code" : "2-9",
+                    "disabled" : false,
+                    "allow_featuring" : true,
+                    "allow_promotion" : true,
+                    "allow_background" : true,
+                    "title" : [ {
+                      "locale" : "de",
+                      "value" : "Wein/Champagner"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "Vins/champagnes"
+                    }, {
+                      "locale" : "it",
+                      "value" : "Vino/champagne"
+                    } ],
+                    "parent" : {
+                      "id" : "8fd653c3-a86b-4529-bbb5-58d06919d484",
+                      "code" : "2",
+                      "disabled" : false,
+                      "allow_featuring" : true,
+                      "allow_promotion" : true,
+                      "allow_background" : true,
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Getränke"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Boissons"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Bevande"
+                      } ]
+                    }
+                  },
+                  "barcodes" : [ {
+                    "value" : 8.6003000094E10,
+                    "type" : "UPC12",
+                    "quantity" : 1,
+                    "master" : false
+                  }, {
+                    "value" : 8.6003004344E10,
+                    "type" : "UPC12",
+                    "quantity" : 6,
+                    "master" : false
+                  }, {
+                    "value" : "5010186016172",
+                    "type" : "EAN13",
+                    "quantity" : 1,
+                    "master" : true
+                  }, {
+                    "value" : 8.60030043442E11,
+                    "type" : "EAN13",
+                    "quantity" : 6,
+                    "master" : true
+                  } ],
+                  "content" : {
+                    "size" : 0.75,
+                    "label" : [ {
+                      "locale" : "de",
+                      "value" : "cl"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "cl"
+                    }, {
+                      "locale" : "it",
+                      "value" : "cl"
+                    } ],
+                    "text" : [ {
+                      "locale" : "de",
+                      "value" : "75 cl"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "75 cl"
+                    }, {
+                      "locale" : "it",
+                      "value" : "75 cl"
+                    } ]
+                  },
+                  "base" : {
+                    "text" : [ {
+                      "locale" : "de",
+                      "value" : "10 cl"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "10 cl"
+                    }, {
+                      "locale" : "it",
+                      "value" : "10 cl"
+                    } ]
+                  },
+                  "eco_labels" : [ {
+                    "id" : "66d94617-bbd7-477e-ae66-183deb67ba5b",
+                    "code" : "bio",
+                    "name" : "Bio"
+                  } ],
+                  "wine" : {
+                    "country" : {
+                      "id" : "IT",
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Italien"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Italie"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Italia"
+                      } ],
+                      "flag" : {
+                        "image_url" : "https://denner-assets.s3-eu-west-1.amazonaws.com/flags/IT.png"
+                      }
+                    },
+                    "region" : {
+                      "id" : "b19c42bf-ed78-46ff-ad6f-fc688a059e6a",
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Apulien"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Les Pouilles"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Puglia"
+                      } ]
+                    },
+                    "type" : {
+                      "id" : 2,
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Rotwein"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Vin rouge"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Vino rosso"
+                      } ]
+                    },
+                    "online_specials" : [ {
+                      "id" : "rarity",
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Rärität"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Rareté"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Rarità"
+                      } ]
+                    } ],
+                    "box" : {
+                      "code" : "KA",
+                      "batch_size" : 3
+                    },
+                    "year" : 2013,
+                    "food_matches" : [ {
+                      "id" : "PASTA",
+                      "titles" : [ {
+                        "locale" : "de",
+                        "value" : "Pasta"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Pâtes"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Pasta"
+                      } ]
+                    }, {
+                      "id" : "MEAT-SAUCE",
+                      "titles" : [ {
+                        "locale" : "de",
+                        "value" : "Fleisch mit würzigen Saucen"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Viande aux sauces relevées"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Carni accompagnate da salse aromatiche"
+                      } ]
+                    } ],
+                    "characteristic_scores" : [ {
+                      "characteristic" : "acid",
+                      "value" : 1
+                    }, {
+                      "characteristic" : "sweetness",
+                      "value" : 2
+                    }, {
+                      "characteristic" : "intensity",
+                      "value" : 1
+                    }, {
+                      "characteristic" : "barrique-aging",
+                      "value" : 0
+                    }, {
+                      "characteristic" : "tannins",
+                      "value" : 1
+                    } ],
+                    "grapes" : [ {
+                      "id" : "PRIMITIVO",
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Primitivo"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Primitivo"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Primitivo"
+                      } ],
+                      "sort_index" : 0
+                    } ],
+                    "character" : [ {
+                      "locale" : "de",
+                      "value" : "Dunkles Rubinrot. In der Nase Aromen von roten Beeren, reifen Kirschen und Brombeeren. Geschmeidig im Gaumen."
+                    }, {
+                      "locale" : "fr",
+                      "value" : "Robe rubis foncé. Nez de baies rouges, de cerises matures et de mûres. Bouche moelleuse."
+                    }, {
+                      "locale" : "it",
+                      "value" : "Rosso rubino scuro. Al naso aromi di bacche rosse, ciliege mature e more. Morbido al palato."
+                    } ],
+                    "temperature" : [ {
+                      "locale" : "de",
+                      "value" : "16-18 °C"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "16-18 °C"
+                    }, {
+                      "locale" : "it",
+                      "value" : "16-18 °C"
+                    } ],
+                    "medals" : [ {
+                      "expert" : {
+                        "id" : "eba162da-a71f-4945-a0a1-3bc60ebe55c1",
+                        "title" : [ {
+                          "locale" : "de",
+                          "value" : "Expovina"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Expovina"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Expovina"
+                        } ],
+                        "in_search" : true
+                      },
+                      "year" : 2016,
+                      "wine_year" : 2015,
+                      "valuation" : {
+                        "type" : "diploma",
+                        "diploma" : {
+                          "id" : "cc8d2f6a-70c5-4679-af30-704862d34fdc",
+                          "name" : "Grosses Golddiplom",
+                          "text" : [ {
+                            "locale" : "de",
+                            "value" : "Grosses Golddiplom"
+                          }, {
+                            "locale" : "fr",
+                            "value" : "Grand diplôme d’Or"
+                          }, {
+                            "locale" : "it",
+                            "value" : "Grande Diploma d'oro"
+                          } ],
+                          "priority" : 1
+                        },
+                        "text" : [ {
+                          "locale" : "de",
+                          "value" : "Grosses Golddiplom"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Grand diplôme d’Or"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Grande Diploma d'oro"
+                        } ],
+                        "priority" : 1
+                      },
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "Grosses Golddiplom Expovina (2016)"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Grand diplôme d’Or Expovina (2016)"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Grande Diploma d'oro Expovina (2016)"
+                      } ]
+                    }, {
+                      "expert" : {
+                        "id" : "353e6031-62ff-4a9d-a455-6e3dc22f923a",
+                        "title" : [ {
+                          "locale" : "de",
+                          "value" : "Wine Spectator"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Wine Spectator"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Wine Spectator"
+                        } ],
+                        "in_search" : true
+                      },
+                      "year" : 2016,
+                      "wine_year" : 2015,
+                      "valuation" : {
+                        "type" : "points",
+                        "value" : 91,
+                        "text" : [ {
+                          "locale" : "de",
+                          "value" : "91 Punkte"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "91 points"
+                        }, {
+                          "locale" : "it",
+                          "value" : "91 punti"
+                        } ],
+                        "priority" : 90
+                      },
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "91 Punkte Wine Spectator (2016)"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "91 points Wine Spectator (2016)"
+                      }, {
+                        "locale" : "it",
+                        "value" : "91 punti Wine Spectator (2016)"
+                      } ]
+                    }, {
+                      "expert" : {
+                        "id" : "fab9b67f-6bba-4091-9247-9264e93461c8",
+                        "title" : [ {
+                          "locale" : "de",
+                          "value" : "Winery of the Year"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Winery of the Year"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Winery of the Year"
+                        } ],
+                        "sort_index" : 2900,
+                        "in_search" : true
+                      },
+                      "year" : 2016,
+                      "wine_year" : 2015,
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "Winery of the Year (2016)"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Winery of the Year (2016)"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Winery of the Year (2016)"
+                      } ]
+                    }, {
+                      "expert" : {
+                        "id" : "86d68b9d-56d7-47d1-b2be-688647cc3929",
+                        "title" : [ {
+                          "locale" : "de",
+                          "value" : "Antonio Galloni"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Antonio Galloni"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Antonio Galloni"
+                        } ],
+                        "sort_index" : 100,
+                        "in_search" : true
+                      },
+                      "year" : 2016,
+                      "wine_year" : 2015,
+                      "valuation" : {
+                        "type" : "points",
+                        "value" : 85,
+                        "lower_value" : 83,
+                        "text" : [ {
+                          "locale" : "de",
+                          "value" : "83-85 Punkte"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "83-85 points"
+                        }, {
+                          "locale" : "it",
+                          "value" : "83-85 punti"
+                        } ],
+                        "priority" : 151
+                      },
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "83-85 Punkte Antonio Galloni (2016)"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "83-85 points Antonio Galloni (2016)"
+                      }, {
+                        "locale" : "it",
+                        "value" : "83-85 punti Antonio Galloni (2016)"
+                      } ]
+                    } ],
+                    "medals_text" : [ {
+                      "locale" : "de",
+                      "value" : "91 Punkte Wine Spectator (2016), 83-85 Punkte Antonio Galloni (2016), Grosses Golddiplom Expovina (2016), Winery of the Year (2016)"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "91 points Wine Spectator (2016), 83-85 points Antonio Galloni (2016), Grand diplôme d’Or Expovina (2016), Winery of the Year (2016)"
+                    }, {
+                      "locale" : "it",
+                      "value" : "91 punti Wine Spectator (2016), 83-85 punti Antonio Galloni (2016), Grande Diploma d'oro Expovina (2016), Winery of the Year (2016)"
+                    } ],
+                    "storage" : [ {
+                      "locale" : "de",
+                      "value" : "3 Jahre"
+                    }, {
+                      "locale" : "fr",
+                      "value" : "3 ans"
+                    }, {
+                      "locale" : "it",
+                      "value" : "3 anni"
+                    } ],
+                    "grower" : {
+                      "id" : "447ff1e5-798c-4ac8-8ff2-98bfbb4700bd",
+                      "name" : "Thomas Weinmacher",
+                      "description" : [ {
+                        "locale" : "de",
+                        "value" : "Es liegt in der Tradition der Familie Weinmacher, hervorragende Weine in Eichenfässern zu produzieren. ..."
+                      }, {
+                        "locale" : "fr",
+                        "value" : ""
+                      }, {
+                        "locale" : "it",
+                        "value" : ""
+                      } ],
+                      "picture" : {
+                        "id" : "3c8cc89e-6350-4a8a-8854-d2feafc9b62e",
+                        "cdn_url" : "https://denner.imgix.net/assets/74f174ba-109d-4555-8f32-fd4951232532/weinmacher-mood.png",
+                        "created_on" : "2017-10-19T10:20:57+01:00"
+                      },
+                      "url" : "https://www.weinmacher-weine.com/"
+                    },
+                    "rating" : {
+                      "value" : 4.45,
+                      "total" : 11,
+                      "valid" : true
+                    },
+                    "shop" : {
+                      "url" : "https://www.denner.ch/skuredirect/051273/",
+                      "for_sale" : true,
+                      "stock" : {
+                        "value" : -15,
+                        "code" : 2,
+                        "message" : [ {
+                          "locale" : "de",
+                          "value" : "Derzeit nicht bestellbar"
+                        }, {
+                          "locale" : "fr",
+                          "value" : "Actuellement pas disponible"
+                        }, {
+                          "locale" : "it",
+                          "value" : "Attualmente non disponibile"
+                        } ]
+                      },
+                      "quantity" : 6,
+                      "compared" : false,
+                      "prices" : {
+                        "sales" : 59.4,
+                        "instead" : 68.4,
+                        "final" : true,
+                        "by_quantity" : [ {
+                          "quantity" : 1,
+                          "sales" : 9.9,
+                          "instead" : 11.4,
+                          "final" : true
+                        }, {
+                          "quantity" : 6,
+                          "sales" : 59.4,
+                          "instead" : 68.4,
+                          "final" : true
+                        } ]
+                      },
+                      "discount" : [ {
+                        "locale" : "de",
+                        "value" : "13%"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "13%"
+                      }, {
+                        "locale" : "it",
+                        "value" : "13%"
+                      } ],
+                      "title" : [ {
+                        "locale" : "de",
+                        "value" : "Mandorla Primitivo di Puglia IGT 6 x 75 cl"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Mandorla Primitivo di Puglia IGT 6 x 75 cl"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Mandorla Primitivo di Puglia IGT 6 x 75 cl"
+                      } ],
+                      "pictures" : [ {
+                        "id" : "5983a33d-ac61-49a8-a836-43259e78e9d0",
+                        "cdn_url" : "https://denner.imgix.net/assets/103354f2-1fbc-47e9-a40a-bf93b04e1680/web/051273_c_K_DL.png",
+                        "quantity" : 1,
+                        "created_on" : "2016-01-07T15:42:19+02:00",
+                        "view" : {
+                          "id" : "front"
+                        }
+                      }, {
+                        "id" : "dabfe014-eb50-4871-9c96-e49324af7493",
+                        "cdn_url" : "https://denner.imgix.net/assets/103354f2-1fbc-47e9-a40a-bf93b04e1680/web/051273_c_K_DL_back.png",
+                        "quantity" : 1,
+                        "created_on" : "2016-01-07T15:49:03+02:00",
+                        "view" : {
+                          "id" : "back"
+                        }
+                      } ],
+                      "notes" : [ {
+                        "locale" : "de",
+                        "value" : "<b>Allgemeiner </b>Hinweis"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "<ul><li>Allgemeiner <i>Hinweis</i></li></ul>"
+                      }, {
+                        "locale" : "it",
+                        "value" : "<font color=\"#ff0000\">Allgemeiner Hinweis</font>"
+                      } ]
+                    }
+                  }
+                } ]
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ArticlesResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/wines/{article_id}/appraisals" : {
+      "get" : {
+        "tags" : [ "wine" ],
+        "summary" : "List the appraisals of given wine",
+        "description" : "Use this operation to get a list of all appraisals (Bewertungen) for a specific wine.\n",
+        "operationId" : "listAppraisalsByWine",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "total_appraisals" : 15,
+                "appraisals" : [ {
+                  "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                  "created_on" : "2015-10-30T10:16:41+02:00",
+                  "wine_year" : 2013,
+                  "title" : "un très très bon vin",
+                  "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                  "response" : "Merci!",
+                  "rating" : 5,
+                  "display_name" : "Hans M.",
+                  "city" : "Cossonay",
+                  "language" : "fr",
+                  "article" : {
+                    "id" : 51901.0
+                  },
+                  "upvotes" : 0,
+                  "downvotes" : 1
+                }, {
+                  "id" : "a8c82c69-e975-4d3b-b0ba-aae6ed961cd7",
+                  "created_on" : "2015-10-20T14:37:56+02:00",
+                  "title" : "Ein Primitivo passt immer.",
+                  "rating" : 4,
+                  "display_name" : "Michelle M.",
+                  "city" : "Zürich",
+                  "language" : "de",
+                  "article" : {
+                    "id" : 51901.0
+                  },
+                  "upvotes" : 2,
+                  "downvotes" : 0
+                } ]
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/AppraisalsResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "wine" ],
+        "summary" : "Create a new appraisal for the given wine",
+        "description" : "Use this operation to create a new appraisal (Bewertung) for a specific wine.\n",
+        "operationId" : "createAppraisal",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "in" : "body",
+          "name" : "appraisal",
+          "description" : "Data for the appraisal\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/NewAppraisal"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "examples" : {
+              "application/json" : {
+                "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                "created_on" : "2015-10-30T10:16:41+02:00",
+                "wine_year" : 2013,
+                "title" : "un très très bon vin",
+                "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                "rating" : 5,
+                "display_name" : "Hans M.",
+                "city" : "Cossonay",
+                "language" : "fr"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/Appraisal"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/wines/{article_id}/appraisals/{appraisal_id}/votes" : {
+      "post" : {
+        "tags" : [ "wine" ],
+        "summary" : "Vote on the given appraisal",
+        "description" : "Use this operation to create a new vote for a specific appraisal.\n",
+        "operationId" : "createVote",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "article_id",
+          "in" : "path",
+          "description" : "The unique identifier of an article",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^\\d{6}$/"
+        }, {
+          "name" : "appraisal_id",
+          "in" : "path",
+          "description" : "The unique identifier of an appraisal",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+        }, {
+          "in" : "body",
+          "name" : "vote",
+          "description" : "Data for the vote\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/NewVote"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "examples" : {
+              "application/json" : {
+                "id" : "d550a8cc-965d-4048-8a7f-12d2a3c0db0b",
+                "created_on" : "2018-01-09T08:45:16+00:00",
+                "type" : "up",
+                "appraisal" : {
+                  "id" : "9bbfabf0-3c05-4a84-ad91-b73a1c268c7e",
+                  "upvotes" : 2,
+                  "downvotes" : 1
+                },
+                "article" : {
+                  "id" : "051296"
+                }
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/Vote"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/wine-characteristics" : {
+      "get" : {
+        "tags" : [ "wineCharacteristic" ],
+        "summary" : "List of wine characteristics",
+        "description" : "Use this operation to get a list of all wine characteristics (Wein-Geschmacksprofil).\n",
+        "operationId" : "listWineCharacteristics",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "wine_characteristics" : [ {
+                  "id" : "acid",
+                  "name" : "Säure",
+                  "titles" : [ {
+                    "locale" : "de",
+                    "value" : "Säure"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "acidité"
+                  }, {
+                    "locale" : "it",
+                    "value" : "acidità"
+                  } ],
+                  "sort_index" : 1
+                }, {
+                  "id" : "sweetness",
+                  "name" : "Zucker",
+                  "titles" : [ {
+                    "locale" : "de",
+                    "value" : "Zucker"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "sucres"
+                  }, {
+                    "locale" : "it",
+                    "value" : "zuccheri"
+                  } ],
+                  "sort_index" : 2
+                }, {
+                  "id" : "intensity",
+                  "name" : "Intensität",
+                  "titles" : [ {
+                    "locale" : "de",
+                    "value" : "Intensität"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "intensité"
+                  }, {
+                    "locale" : "it",
+                    "value" : "intensità"
+                  } ],
+                  "sort_index" : 3
+                }, {
+                  "id" : "barrique-aging",
+                  "name" : "Barrique-Ausbau",
+                  "titles" : [ {
+                    "locale" : "de",
+                    "value" : "Barrique-Ausbau"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "vieillissement en barrique"
+                  }, {
+                    "locale" : "it",
+                    "value" : "invecchiamento in barrique"
+                  } ],
+                  "sort_index" : 4
+                }, {
+                  "id" : "tannins",
+                  "name" : "Tannine",
+                  "titles" : [ {
+                    "locale" : "de",
+                    "value" : "Tannine"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "tannins"
+                  }, {
+                    "locale" : "it",
+                    "value" : "tannini"
+                  } ],
+                  "sort_index" : 5
+                } ],
+                "total_items" : 5
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/WineCharacteristicsResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/wine-growers" : {
+      "get" : {
+        "tags" : [ "wineGrower" ],
+        "summary" : "List wine growers",
+        "description" : "Use this operation to get a list of all wine growers (Winzer).\n",
+        "operationId" : "listWineGrowers",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- property: Property to filter on.\n- operator: Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- type: Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- value: Value. Must be of the defined type.\n\nExamples:\n- [{\"property\":\"id\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"7627150d-36bd-4867-89b2-091800a03d24\",\"58afec5c-ece9-4b66-bc55-00d6dc1b65b8\"]}]\n- [{\"property\":\"in_shop\",\"operator\":\"eq\",\"type\":\"boolean\",\"value\":true}]\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort the results, e.g. \"sort=[{\"property\":\"name\",\"direction\":\"desc\"}]\" will sort by name (Z to A)\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "total_items" : 15,
+                "wine_growers" : [ {
+                  "id" : "447ff1e5-798c-4ac8-8ff2-98bfbb4700bd",
+                  "name" : "Thomas Weinmacher",
+                  "description" : [ {
+                    "locale" : "de",
+                    "value" : "Es liegt in der Tradition der Familie Weinmacher, hervorragende Weine in Eichenfässern zu produzieren. ..."
+                  }, {
+                    "locale" : "fr",
+                    "value" : ""
+                  }, {
+                    "locale" : "it",
+                    "value" : ""
+                  } ],
+                  "picture" : {
+                    "id" : "3c8cc89e-6350-4a8a-8854-d2feafc9b62e",
+                    "cdn_url" : "https://denner.imgix.net/assets/74f174ba-109d-4555-8f32-fd4951232532/weinmacher-mood.png",
+                    "created_on" : "2017-10-19T10:20:57+01:00"
+                  },
+                  "url" : "https://www.weinmacher-weine.com/"
+                } ]
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/WineGrowersResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/wine-experts" : {
+      "get" : {
+        "tags" : [ "wineExperts" ],
+        "summary" : "List wine experts",
+        "description" : "Use this operation to get a list of all wine experts (Experte für Auszeichnungen).\n",
+        "operationId" : "listWineExperts",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- property: Property to filter on.\n- operator: Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- type: Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- value: Value. Must be of the defined type.\n\nExamples:\n- [{\"property\":\"id\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"7627150d-36bd-4867-89b2-091800a03d24\",\"58afec5c-ece9-4b66-bc55-00d6dc1b65b8\"]}]\n- [{\"property\":\"in_shop\",\"operator\":\"eq\",\"type\":\"boolean\",\"value\":true}]\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort the results, e.g. \"sort=[{\"property\":\"name\",\"direction\":\"desc\"}]\" will sort by name (Z to A)\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "total_items" : 2,
+                "wine_experts" : [ {
+                  "id" : "86e6f1cb-4339-458e-b1ae-ed3ba9ca71ea",
+                  "name" : "Bettane + Desseauve",
+                  "title" : [ {
+                    "locale" : "de",
+                    "value" : "Bettane + Desseauve"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "Bettane + Desseauve"
+                  }, {
+                    "locale" : "it",
+                    "value" : "Bettane + Desseauve"
+                  } ],
+                  "valuation_types" : [ {
+                    "id" : "points",
+                    "name" : "Punkte",
+                    "min" : 1,
+                    "max" : 20
+                  }, {
+                    "id" : "diploma",
+                    "name" : "Diplom",
+                    "diplomas" : [ {
+                      "id" : "7f2e1122-6bc1-432a-a6db-ae07536575dc",
+                      "name" : "Médaille d'Or",
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "Médaille d'Or"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Médaille d'Or"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Médaille d'Or"
+                      } ],
+                      "priority" : 1
+                    }, {
+                      "id" : "1ce6ae10-03e6-4d15-9940-eff9c7850ec8",
+                      "name" : "Médaille d'Argent",
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "Médaille d'Argent"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Médaille d'Argent"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Médaille d'Argent"
+                      } ],
+                      "priority" : 2
+                    }, {
+                      "id" : "3e14bd2e-37ec-42a0-985f-46bc1cfe8f08",
+                      "name" : "Médeaille de Bronze",
+                      "text" : [ {
+                        "locale" : "de",
+                        "value" : "Médeaille de Bronze"
+                      }, {
+                        "locale" : "fr",
+                        "value" : "Médeaille de Bronze"
+                      }, {
+                        "locale" : "it",
+                        "value" : "Médeaille de Bronze"
+                      } ],
+                      "priority" : 3
+                    } ]
+                  } ],
+                  "sort_index" : 500,
+                  "in_search" : true
+                }, {
+                  "id" : "fab9b67f-6bba-4091-9247-9264e93461c8",
+                  "name" : "Winery of the Year",
+                  "title" : [ {
+                    "locale" : "de",
+                    "value" : "Winery of the Year"
+                  }, {
+                    "locale" : "fr",
+                    "value" : "Winery of the Year"
+                  }, {
+                    "locale" : "it",
+                    "value" : "Winery of the Year"
+                  } ],
+                  "sort_index" : 2900,
+                  "in_search" : true
+                } ]
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/WineExpertsResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/appraisals" : {
+      "get" : {
+        "tags" : [ "appraisal" ],
+        "summary" : "List appraisals",
+        "description" : "Use this operation to get a list of all appraisals (Bewertungen).\n",
+        "operationId" : "listAppraisals",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sort the results, e.g. \"sort=name__desc\" will sort by name (Z to A)\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number. Default: 1\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1,
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "page_size",
+          "in" : "query",
+          "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "format" : "int32"
+        }, {
+          "name" : "f.id",
+          "in" : "query",
+          "description" : "Filter by ID",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "f.wine_id",
+          "in" : "query",
+          "description" : "Filter by wine ID",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "f.shop_user_id",
+          "in" : "query",
+          "description" : "Filter by Wineshop user ID",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "f.email",
+          "in" : "query",
+          "description" : "Filter by email address",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "f.source",
+          "in" : "query",
+          "description" : "Filter by source",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful listing",
+            "examples" : {
+              "application/json" : {
+                "total_appraisals" : 15,
+                "appraisals" : [ {
+                  "id" : "7063984c-4eea-4abe-825b-e80612ba89c3",
+                  "created_on" : "2015-10-30T10:16:41+02:00",
+                  "wine_year" : 2013,
+                  "title" : "un très très bon vin",
+                  "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! le cépage ORIGINAL !!! Denner, qu'est ce qui vous arrive ???",
+                  "response" : "Merci!",
+                  "rating" : 5,
+                  "display_name" : "Hans M.",
+                  "city" : "Cossonay",
+                  "language" : "fr",
+                  "article" : {
+                    "id" : 51901.0
+                  },
+                  "upvotes" : 0,
+                  "downvotes" : 1
+                }, {
+                  "id" : "a8c82c69-e975-4d3b-b0ba-aae6ed961cd7",
+                  "created_on" : "2015-10-20T14:37:56+02:00",
+                  "title" : "Ein Primitivo passt immer.",
+                  "rating" : 4,
+                  "display_name" : "Michelle M.",
+                  "city" : "Zürich",
+                  "language" : "de",
+                  "article" : {
+                    "id" : 51901.0
+                  },
+                  "upvotes" : 2,
+                  "downvotes" : 0
+                } ]
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/AppraisalsResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "appKey" : [ ]
+        } ]
+      }
+    },
+    "/sweepstake-participants" : {
+      "post" : {
+        "tags" : [ "other" ],
+        "summary" : "Create a new sweepstake participant",
+        "description" : "Use this operation to create a sweepstake participant (Gewinnspielteilnehmer).\n",
+        "operationId" : "createSweepstakeParticipant",
+        "parameters" : [ {
+          "name" : "Accept",
+          "in" : "header",
+          "description" : "Accepted content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "name" : "Content-Type",
+          "in" : "header",
+          "description" : "Request body content type (supported is \"application/json\")\n",
+          "required" : false,
+          "type" : "string",
+          "default" : "application/json"
+        }, {
+          "in" : "body",
+          "name" : "participant",
+          "description" : "Data for the participant\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/NewSweepstakeParticipant"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful creation",
+            "examples" : {
+              "application/json" : {
+                "id" : "ed20c828-17b4-4a19-b403-ae223e1cfece",
+                "created_on" : "2016-05-09T13:30:29+00:00",
+                "display_name" : "Michelle M.",
+                "city" : "Zurich",
+                "language" : "de"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/SweepstakeParticipant"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "appKey" : {
+      "description" : "Application key",
+      "type" : "apiKey",
+      "name" : "App-Key",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "UUIDv4" : {
+      "type" : "string",
+      "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/",
+      "description" : "Unique identifier"
+    },
+    "SortIndex" : {
+      "type" : "integer",
+      "minimum" : 0,
+      "format" : "int32",
+      "description" : "Index for sorting"
+    },
+    "Locale" : {
+      "type" : "string",
+      "pattern" : "/^(de|fr|it)$/",
+      "description" : "Locale"
+    },
+    "Translation" : {
+      "type" : "object",
+      "properties" : {
+        "locale" : {
+          "$ref" : "#/definitions/Locale"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "Translated text value"
+        }
+      }
+    },
+    "Url" : {
+      "type" : "string",
+      "description" : "Web URL address"
+    },
+    "CountryFlag" : {
+      "type" : "object",
+      "properties" : {
+        "image_url" : {
+          "$ref" : "#/definitions/Url"
+        }
+      },
+      "description" : "Country flag"
+    },
+    "Country" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Country code definition from ISO 3166",
+          "pattern" : "/^[A-Z]{2}$/"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "flag" : {
+          "$ref" : "#/definitions/CountryFlag"
+        }
+      },
+      "description" : "Country"
+    },
+    "Date" : {
+      "type" : "string",
+      "format" : "date",
+      "description" : "Date; Format full-date of RFC3339 (http://xml2rfc.ietf.org/public/rfc/html/rfc3339.html#anchor14)"
+    },
+    "Year" : {
+      "type" : "integer",
+      "minimum" : 1800,
+      "format" : "int32",
+      "description" : "Year"
+    },
+    "Price" : {
+      "type" : "number",
+      "minimum" : 0,
+      "format" : "float",
+      "description" : "Price in CHF"
+    },
+    "Quantity" : {
+      "type" : "integer",
+      "minimum" : 0,
+      "format" : "int32",
+      "description" : "Quantity"
+    },
+    "ContentSize" : {
+      "type" : "number",
+      "minimum" : 0,
+      "format" : "float",
+      "description" : "Content size"
+    },
+    "AssignedArticleGroup" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "code" : {
+          "type" : "string",
+          "description" : "Navision article group code (e.g. '01', '20', '01-60', '38-998')",
+          "pattern" : "/^\\d{2}(-\\d{2,3})?$/"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Article group name"
+        },
+        "parent" : {
+          "$ref" : "#/definitions/AssignedArticleGroup"
+        }
+      }
+    },
+    "EcoLabel" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "code" : {
+          "type" : "string",
+          "description" : "Navision identification code"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "German name for the eco label"
+        }
+      }
+    },
+    "Article" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Article name"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "description" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "article_group" : {
+          "$ref" : "#/definitions/AssignedArticleGroup"
+        },
+        "online_group" : {
+          "$ref" : "#/definitions/AssignedOnlineGroup"
+        },
+        "barcodes" : {
+          "$ref" : "#/definitions/Barcodes"
+        },
+        "content" : {
+          "$ref" : "#/definitions/Content"
+        },
+        "base" : {
+          "$ref" : "#/definitions/BaseContent"
+        },
+        "eco_labels" : {
+          "$ref" : "#/definitions/EcoLabels"
+        },
+        "wine" : {
+          "$ref" : "#/definitions/ArticleWine"
+        }
+      }
+    },
+    "ArticlePrices" : {
+      "type" : "object",
+      "properties" : {
+        "sales" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "list" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "instead" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "base" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "final" : {
+          "type" : "boolean",
+          "description" : "Is the price final?"
+        },
+        "by_quantity" : {
+          "$ref" : "#/definitions/QuantityPrices"
+        }
+      }
+    },
+    "QuantityPrices" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/QuantityPrice"
+      }
+    },
+    "QuantityPrice" : {
+      "type" : "object",
+      "properties" : {
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "sales" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "list" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "instead" : {
+          "$ref" : "#/definitions/Price"
+        },
+        "final" : {
+          "type" : "boolean",
+          "description" : "Is the price final?"
+        }
+      }
+    },
+    "Content" : {
+      "type" : "object",
+      "properties" : {
+        "size" : {
+          "$ref" : "#/definitions/ContentSize"
+        },
+        "label" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "text" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "BaseContent" : {
+      "type" : "object",
+      "properties" : {
+        "text" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "ArticleWine" : {
+      "type" : "object",
+      "properties" : {
+        "country" : {
+          "$ref" : "#/definitions/Country"
+        },
+        "region" : {
+          "$ref" : "#/definitions/Region"
+        },
+        "type" : {
+          "$ref" : "#/definitions/WineType"
+        },
+        "online_specials" : {
+          "$ref" : "#/definitions/OnlineSpecials"
+        },
+        "box" : {
+          "$ref" : "#/definitions/WineBox"
+        },
+        "year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "food_matches" : {
+          "$ref" : "#/definitions/FoodMatches"
+        },
+        "characteristic_scores" : {
+          "$ref" : "#/definitions/CharacteristicScores"
+        },
+        "grapes" : {
+          "$ref" : "#/definitions/Grapes"
+        },
+        "character" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "temperature" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "medals" : {
+          "$ref" : "#/definitions/Medals"
+        },
+        "storage" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "grower" : {
+          "$ref" : "#/definitions/WineGrowers"
+        },
+        "rating" : {
+          "$ref" : "#/definitions/Rating"
+        },
+        "shop" : {
+          "$ref" : "#/definitions/WineShop"
+        }
+      }
+    },
+    "FoodMatch" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "ID"
+        },
+        "titles" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "score" : {
+          "format" : "int32",
+          "description" : "Given score (0 = no match; 1 = slight match; 2 = good match; 3 = very good match; 4 = perfect match)"
+        }
+      }
+    },
+    "Characteristic" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "ID"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "titles" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "sort_index" : {
+          "$ref" : "#/definitions/SortIndex"
+        }
+      }
+    },
+    "CharacteristicScore" : {
+      "type" : "object",
+      "properties" : {
+        "characteristic" : {
+          "type" : "string",
+          "description" : "Characteristic ID"
+        },
+        "value" : {
+          "format" : "int32",
+          "description" : "Given value (-2 = not at all; -1 = not much; 0 = neutral; 1 = has some; 2 = full characteristic)"
+        }
+      }
+    },
+    "Grape" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "ID"
+        },
+        "titles" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "sort_index" : {
+          "$ref" : "#/definitions/SortIndex"
+        }
+      }
+    },
+    "Medal" : {
+      "type" : "object",
+      "properties" : {
+        "expert" : {
+          "$ref" : "#/definitions/Expert"
+        },
+        "year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "valuation" : {
+          "$ref" : "#/definitions/MedalValuation"
+        }
+      }
+    },
+    "MedalValuation" : {
+      "type" : "object",
+      "required" : [ "type" ],
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Valuation type (e.g. 'diploma' or 'points')"
+        },
+        "diploma" : {
+          "$ref" : "#/definitions/WineDiploma"
+        },
+        "value" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Point valuation score"
+        },
+        "lower_value" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Point valuation lower score"
+        },
+        "text" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "priority" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "Expert" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "ID"
+        },
+        "titles" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "sort_index" : {
+          "$ref" : "#/definitions/SortIndex"
+        }
+      }
+    },
+    "WineShop" : {
+      "type" : "object",
+      "properties" : {
+        "url" : {
+          "$ref" : "#/definitions/Url"
+        },
+        "for_sale" : {
+          "type" : "boolean",
+          "description" : "Is the wine for sale (can it be bought)?"
+        },
+        "stock" : {
+          "$ref" : "#/definitions/Stock"
+        },
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "compared" : {
+          "type" : "boolean",
+          "description" : "Is the wine's instead price compared externally (Konkurrenzvergleich)?"
+        },
+        "prices" : {
+          "$ref" : "#/definitions/ArticlePrices"
+        },
+        "discount" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "pictures" : {
+          "$ref" : "#/definitions/Packshots"
+        },
+        "notes" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "Region" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "WineType" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision wine type code",
+          "minimum" : 0
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "Rating" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "number",
+          "format" : "float",
+          "description" : "Rating value",
+          "minimum" : 0,
+          "maximum" : 5
+        },
+        "total" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Ratng count",
+          "minimum" : 0
+        },
+        "valid" : {
+          "type" : "boolean",
+          "description" : "Is a valid rating?"
+        }
+      }
+    },
+    "Stock" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision stock count, might be negative"
+        },
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision stock code",
+          "minimum" : 0
+        },
+        "message" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "Barcode" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string",
+          "description" : "Barcode text value (pattern according to type)"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Barcode type code (e.g. 'EAN13', 'UPC12', 'ITF14', 'EAN8', 'PLU')"
+        },
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "master" : {
+          "type" : "boolean",
+          "description" : "Is master barcode?"
+        }
+      }
+    },
+    "WineBox" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "description" : "Denner box type code (e.g. 'KA', 'HA', 'HB')",
+          "pattern" : "/^[A-Z]{2}$/"
+        },
+        "batch_size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Batch size",
+          "minimum" : 0
+        }
+      }
+    },
+    "Asset" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "cdn_url" : {
+          "$ref" : "#/definitions/Url"
+        },
+        "created_on" : {
+          "$ref" : "#/definitions/Date"
+        }
+      }
+    },
+    "Packshot" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "cdn_url" : {
+          "$ref" : "#/definitions/Url"
+        },
+        "quantity" : {
+          "$ref" : "#/definitions/Quantity"
+        },
+        "created_on" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "view" : {
+          "$ref" : "#/definitions/PackshotView"
+        }
+      }
+    },
+    "PackshotView" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "View ID"
+        }
+      }
+    },
+    "AssignedOnlineGroup" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Navision online group code"
+        },
+        "disabled" : {
+          "type" : "boolean",
+          "description" : "Is the group disabled?"
+        },
+        "allow_featuring" : {
+          "type" : "boolean",
+          "description" : "Does the group allow the assigned articles to be featured (i.e. displayed on front/main/home page)?"
+        },
+        "allow_promotion" : {
+          "type" : "boolean",
+          "description" : "Does the group allow the assigned articles to be promoted (i.e. displayed on a promotional page)?"
+        },
+        "allow_background" : {
+          "type" : "boolean",
+          "description" : "Does the group allow the assigned articles to be displayed with a background (i.e. displayed on a page with a deceptive/trivializing background)?"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "parent" : {
+          "$ref" : "#/definitions/AssignedOnlineGroup"
+        }
+      }
+    },
+    "OnlineSpecial" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Unique ID"
+        },
+        "sort_index" : {
+          "$ref" : "#/definitions/SortIndex"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        }
+      }
+    },
+    "WineGrower" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name"
+        },
+        "description" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "picture" : {
+          "$ref" : "#/definitions/Asset"
+        },
+        "url" : {
+          "$ref" : "#/definitions/Url"
+        }
+      }
+    },
+    "WineExpert" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name"
+        },
+        "title" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "valuation_types" : {
+          "$ref" : "#/definitions/ValuationTypes"
+        },
+        "sort_index" : {
+          "$ref" : "#/definitions/SortIndex"
+        },
+        "in_search" : {
+          "type" : "boolean",
+          "description" : "Is in search?"
+        }
+      }
+    },
+    "ValuationType" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Valuation type (e.g. 'diploma' or 'points')"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name"
+        },
+        "diplomas" : {
+          "$ref" : "#/definitions/WineDiplomas"
+        },
+        "min" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Point valuation minimum score"
+        },
+        "max" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Point valuation maximum score"
+        }
+      }
+    },
+    "WineDiploma" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "German name for the diploma"
+        },
+        "text" : {
+          "$ref" : "#/definitions/Translations"
+        },
+        "priority" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "description" : "Medal valuation diploma"
+    },
+    "Appraisal" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "response" : {
+          "type" : "string",
+          "description" : "Denner's response"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Given rating",
+          "minimum" : 1,
+          "maximum" : 5
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "Person's (public) name"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        },
+        "article" : {
+          "$ref" : "#/definitions/AppraisalArticle"
+        },
+        "upvotes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of up-votes",
+          "minimum" : 0
+        },
+        "downvotes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of down-votes",
+          "minimum" : 0
+        }
+      }
+    },
+    "AppraisalArticle" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        }
+      }
+    },
+    "NewAppraisal" : {
+      "type" : "object",
+      "required" : [ "address", "city", "email", "firstname", "gender", "language", "lastname", "rating", "title", "zip_code" ],
+      "properties" : {
+        "wine_year" : {
+          "$ref" : "#/definitions/Year"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Title"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Given rating",
+          "minimum" : 1,
+          "maximum" : 5
+        },
+        "firstname" : {
+          "type" : "string",
+          "description" : "Person's first name"
+        },
+        "lastname" : {
+          "type" : "string",
+          "description" : "Person's last name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Person's address"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Person's ZIP code",
+          "minimum" : 1000,
+          "maximum" : 9699
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Person's email address"
+        },
+        "gender" : {
+          "type" : "string",
+          "description" : "Person's gender (either \"male\" or \"female\")"
+        },
+        "shop_user_id" : {
+          "type" : "integer",
+          "description" : "Identifier for the person's Wineshop user account"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      },
+      "example" : {
+        "application/json" : {
+          "wine_year" : 2013,
+          "title" : "un très très bon vin",
+          "description" : "mais ce n'est pas du zinfandel !! c'est du PRIMITIVO !! Denner, qu'est ce qui vous arrive ???",
+          "rating" : 5,
+          "firstname" : "Isabelle",
+          "lastname" : "Rossetti",
+          "address" : "3 rue du Temple",
+          "zip_code" : "1304",
+          "city" : "Cossonay",
+          "email" : "email@gmx.ch",
+          "gender" : "female",
+          "shop_user_id" : 123456789,
+          "language" : "fr"
+        }
+      }
+    },
+    "Vote" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Type (\"up\" or \"down\")"
+        },
+        "appraisal" : {
+          "$ref" : "#/definitions/VoteAppraisal"
+        },
+        "article" : {
+          "$ref" : "#/definitions/VoteArticle"
+        }
+      }
+    },
+    "VoteAppraisal" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "upvotes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of up-votes after this vote",
+          "minimum" : 0
+        },
+        "downvotes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of down-votes after this vote",
+          "minimum" : 0
+        }
+      }
+    },
+    "VoteArticle" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Navision article code",
+          "pattern" : "/^\\d{6}$/"
+        }
+      }
+    },
+    "NewVote" : {
+      "type" : "object",
+      "required" : [ "shop_user_id", "type" ],
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type (\"up\" or \"down\")"
+        },
+        "shop_user_id" : {
+          "type" : "integer",
+          "description" : "Identifier for the person's Wineshop user account"
+        }
+      },
+      "example" : {
+        "application/json" : {
+          "type" : "up",
+          "shop_user_id" : 123456789
+        }
+      }
+    },
+    "SweepstakeParticipant" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/definitions/UUIDv4"
+        },
+        "created_on" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Timestamp"
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "Person's (public) name"
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      }
+    },
+    "NewSweepstakeParticipant" : {
+      "type" : "object",
+      "required" : [ "address", "city", "email", "firstname", "gender", "language", "lastname", "zip_code" ],
+      "properties" : {
+        "firstname" : {
+          "type" : "string",
+          "description" : "Person's first name"
+        },
+        "lastname" : {
+          "type" : "string",
+          "description" : "Person's last name"
+        },
+        "address" : {
+          "type" : "string",
+          "description" : "Person's address"
+        },
+        "zip_code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Person's ZIP code",
+          "minimum" : 1000,
+          "maximum" : 9699
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "Person's city"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Person's email address"
+        },
+        "gender" : {
+          "type" : "string",
+          "description" : "Person's gender (either \"male\" or \"female\")"
+        },
+        "shop_user_id" : {
+          "type" : "integer",
+          "description" : "Identifier for the person's Wineshop user account"
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Locale"
+        }
+      },
+      "example" : {
+        "application/json" : {
+          "firstname" : "Michelle",
+          "lastname" : "Muster",
+          "address" : "Bahnhofstrasse 7",
+          "zip_code" : "8034",
+          "city" : "Zurich",
+          "email" : "email@gmx.ch",
+          "gender" : "female",
+          "shop_user_id" : 123456789,
+          "language" : "de"
+        }
+      }
+    },
+    "Translations" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Translation"
+      }
+    },
+    "EcoLabels" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/EcoLabel"
+      }
+    },
+    "Packshots" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Packshot"
+      }
+    },
+    "Barcodes" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Barcode"
+      }
+    },
+    "Articles" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Article"
+      }
+    },
+    "OnlineSpecials" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/OnlineSpecial"
+      }
+    },
+    "FoodMatches" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/FoodMatch"
+      }
+    },
+    "Characteristics" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Characteristic"
+      }
+    },
+    "CharacteristicScores" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/CharacteristicScore"
+      }
+    },
+    "Grapes" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Grape"
+      }
+    },
+    "Medals" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Medal"
+      }
+    },
+    "WineGrowers" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/WineGrower"
+      }
+    },
+    "WineExperts" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/WineExpert"
+      }
+    },
+    "ValuationTypes" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/ValuationType"
+      }
+    },
+    "WineDiplomas" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/WineDiploma"
+      }
+    },
+    "Appraisals" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Appraisal"
+      }
+    },
+    "ArticlesResponse" : {
+      "type" : "object",
+      "properties" : {
+        "page_count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of pages"
+        },
+        "page_size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The page size"
+        },
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "articles" : {
+          "$ref" : "#/definitions/Articles"
+        }
+      }
+    },
+    "WineCharacteristicsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "wine_characteristics" : {
+          "$ref" : "#/definitions/Characteristics"
+        }
+      }
+    },
+    "WineGrowersResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "wine_growers" : {
+          "$ref" : "#/definitions/WineGrowers"
+        }
+      }
+    },
+    "WineExpertsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_items" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "wine_experts" : {
+          "$ref" : "#/definitions/WineExperts"
+        }
+      }
+    },
+    "AppraisalsResponse" : {
+      "type" : "object",
+      "properties" : {
+        "total_appraisals" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "The number of items on all pages"
+        },
+        "appraisals" : {
+          "$ref" : "#/definitions/Appraisals"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "PageParam" : {
+      "name" : "page",
+      "in" : "query",
+      "description" : "The page number. Default: 1\n",
+      "required" : false,
+      "type" : "integer",
+      "default" : 1,
+      "minimum" : 0,
+      "format" : "int32"
+    },
+    "PageSizeParam" : {
+      "name" : "page_size",
+      "in" : "query",
+      "description" : "The page size. Default: 10\nTo disable pagination (when supported) send \"-1\".\n",
+      "required" : false,
+      "type" : "integer",
+      "default" : 10,
+      "format" : "int32"
+    },
+    "SortParam" : {
+      "name" : "sort",
+      "in" : "query",
+      "description" : "Sort the results, e.g. \"sort=[{\"property\":\"name\",\"direction\":\"desc\"}]\" will sort by name (Z to A)\n",
+      "required" : false,
+      "type" : "string"
+    },
+    "SortSimpleParam" : {
+      "name" : "sort",
+      "in" : "query",
+      "description" : "Sort the results, e.g. \"sort=name__desc\" will sort by name (Z to A)\n",
+      "required" : false,
+      "type" : "string"
+    },
+    "ArticleIdPathParam" : {
+      "name" : "article_id",
+      "in" : "path",
+      "description" : "The unique identifier of an article",
+      "required" : true,
+      "type" : "string",
+      "pattern" : "/^\\d{6}$/"
+    },
+    "AppraisalIdPathParam" : {
+      "name" : "appraisal_id",
+      "in" : "path",
+      "description" : "The unique identifier of an appraisal",
+      "required" : true,
+      "type" : "string",
+      "pattern" : "/^[a-f0-9]{8}\\-[a-f0-9]{4}\\-4[a-f0-9]{3}\\-(8|9|a|b)[a-f0-9]{3}\\-[a-f0-9]{12}$/"
+    },
+    "FilterParam" : {
+      "name" : "filter",
+      "in" : "query",
+      "description" : "Filters: JSON array of Filter object, urlencoded.\n\nFilter object:\n- property: Property to filter on.\n- operator: Operation property. Enumeration ('eq', 'like', 'lt', 'gt', 'in', ...). Dependent from property (not all might be allowed).\n- type: Type of value. Enumeration ('string', 'integer', 'boolean', 'array') Dependent from property and operator (not all might be allowed).\n- value: Value. Must be of the defined type.\n\nExamples:\n- [{\"property\":\"id\",\"operator\":\"in\",\"type\":\"array\",\"value\":[\"7627150d-36bd-4867-89b2-091800a03d24\",\"58afec5c-ece9-4b66-bc55-00d6dc1b65b8\"]}]\n- [{\"property\":\"in_shop\",\"operator\":\"eq\",\"type\":\"boolean\",\"value\":true}]\n",
+      "required" : false,
+      "type" : "string"
+    },
+    "AcceptHeader" : {
+      "name" : "Accept",
+      "in" : "header",
+      "description" : "Accepted content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    },
+    "ContentTypeHeader" : {
+      "name" : "Content-Type",
+      "in" : "header",
+      "description" : "Request body content type (supported is \"application/json\")\n",
+      "required" : false,
+      "type" : "string",
+      "default" : "application/json"
+    }
+  }
+}
